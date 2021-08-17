@@ -16,8 +16,8 @@ function Copyright() {
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
       <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{' '}
+        Mi sitio web de proyectos realizados:
+      </Link>{'https://github.com/cocorland'}
       {new Date().getFullYear()}
       {'.'}
     </Typography>
@@ -103,10 +103,12 @@ export default function Album() {
       {/* Footer */}
       <footer className={classes.footer}>
         <Typography variant="h6" align="center" gutterBottom>
-          Footer
+          Orlando Chaparro Salazar @orlandcs
         </Typography>
         <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
-          Something here to give the footer a purpose!
+          Página web propiedad de Vencerámica Venezuela.
+          <li>Diseño, Implementación, Gestión, Elaboración y Mantenimiento realizado por:</li>
+          <li>Orlando Chaparro Salazar.</li>
         </Typography>
         <Copyright />
       </footer>

@@ -10,7 +10,7 @@ import Album from "./components/album";
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-
+import logo from './components/bathroom1.png';
 
 /**
  * Renders information about the signed-in user or a button to retrieve data about the user
@@ -73,14 +73,14 @@ const ProfileContent = () => {
             <Typography variant="h7" align="center" color="textSecondary" paragraph>
                 Te damos la bienvenida al sistema de visualización de archivos de vencerámica venezuela, te encuentras en
                 el servidor principal. Utilizando el sistema de navegación por tarjetas puedes dirigirte al archivo que
-                necesitas, o puedes esperar a que implemente el buscador cuando me de la gana.
+                necesitas, o puedes utilizar el buscador en la barra de tareas.
             </Typography>
             <div className={classes.heroButtons}>
 
                 {graphData ? 
                     <ProfileData graphData={graphData} />
                     :
-                    <Button variant="secondary" onClick={RequestProfileData}>Request Profile Information</Button>
+                    <Button variant="secondary" onClick={RequestProfileData}>Solicitar Datos del Usuario</Button>
                 }
 
             </div>
@@ -101,9 +101,15 @@ const MainContent = () => {
             </AuthenticatedTemplate>
 
             <UnauthenticatedTemplate>
-                <h5><center>Bienvenido(a) al Sistema de Visualización de Archivos de Vencerámica</center></h5>
-                <br />
-                <h5 className="card-title">Por favor, inicia sesión.</h5>
+                <Typography component="h1" variant="h4" align="center" color="textPrimary" gutterBottom>
+                    Bienvenido(a) al Sistema de Visualización de Archivos de Vencerámica
+                </Typography>
+                <Typography variant="h7" align="center" color="textSecondary" paragraph>
+                    Por favor, Inicie sesión con su cuenta @venceramica.com.
+                </Typography>
+                <br></br>
+                <br></br>
+                <img align="center" src={logo} alt="logo" />
             </UnauthenticatedTemplate>
         </div>
     );
