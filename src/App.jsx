@@ -71,7 +71,7 @@ const ProfileContent = () => {
                 Bienvenido(a) {accounts[0].name}
             </Typography>
             <Typography variant="h7" align="center" color="textSecondary" paragraph>
-                Te damos la bienvenida al sistema de visualización de archivos de vencerámica venezuela, te encuentras en
+                Te damos la bienvenida al sistema de visualización de archivos de Vencerámica, Venezuela. Te encuentras en
                 el servidor principal. Utilizando el sistema de navegación por tarjetas puedes dirigirte al archivo que
                 necesitas, o puedes utilizar el buscador en la barra de tareas.
             </Typography>

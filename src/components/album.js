@@ -106,9 +106,9 @@ export default function Album() {
           Orlando Chaparro Salazar @orlandcs
         </Typography>
         <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
-          Página web propiedad de Vencerámica Venezuela.
-          <li>Diseño, Implementación, Gestión, Elaboración y Mantenimiento realizado por:</li>
-          <li>Orlando Chaparro Salazar.</li>
+          <a>Página web propiedad de Vencerámica Venezuela.</a>
+          <li><a>Diseño, Implementación, Gestión, Elaboración y Mantenimiento realizado por: </a></li>
+          <li><a>Orlando Chaparro Salazar.</a></li>
         </Typography>
         <Copyright />
       </footer>
