@@ -11,6 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import logo from './components/bathroom1.png';
+import './App.css'
 
 /**
  * Renders information about the signed-in user or a button to retrieve data about the user
