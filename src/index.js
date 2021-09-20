@@ -2,10 +2,12 @@ import React from "react";
 import ReactDOM from "react-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "./styles/index.css";
-import App from "./App.jsx";
+/* import App from "./App.jsx"; */
+import Routes from "./Routes";
 import { PublicClientApplication } from "@azure/msal-browser";
 import { MsalProvider } from "@azure/msal-react";
 import { msalConfig } from "./authConfig";
+import "./components/estilos.css";
 
 /**
  * Initialize a PublicClientApplication instance which is provided to the MsalProvider component
@@ -19,7 +21,7 @@ const msalInstance = new PublicClientApplication(msalConfig);
 ReactDOM.render(
     <React.StrictMode>
         <MsalProvider instance={msalInstance}>
-            <App />
+            <Routes />
         </MsalProvider>
     </React.StrictMode>,
     document.getElementById("root")

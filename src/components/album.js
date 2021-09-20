@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -11,7 +11,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
+import visualizador from './visualizador';
 import pdf from './pdf.png';
+import carpeta from './carpeta.png';
+import elemento from './abrete.pdf';
 
 function Copyright() {
   return (
@@ -35,12 +38,12 @@ function SimpleBreadcrumbs() {
   return (
     <Breadcrumbs aria-label="breadcrumb" align="center" variant="outlined">
       <Link color="inherit" href="/" onClick={handleClick}>
-        Material-UI
+        Directorio Principal
       </Link>
       <Link color="inherit" href="/getting-started/installation/" onClick={handleClick}>
         Core
       </Link>
-      <Typography color="textPrimary">Breadcrumb</Typography>
+      <Typography color="textPrimary">Carpeta Especial</Typography>
     </Breadcrumbs>
   );
 }
@@ -78,10 +81,22 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 /** Cantidad de tarjetas que voy a mostrar */
-const cards = [  ];
+const cards = [];
+
 
 export default function Album() {
   const classes = useStyles();
+  const url = 'http://localhost:4000/api/todos'
+  const [todos,setTodos] = useState()
+  const fetchApi = async () => {
+    const response = await fetch(url)
+    console.log(response.status)
+    const responseJSON = await response.json()
+    setTodos(responseJSON)
+  }
+  useEffect(() => {
+    fetchApi()
+  }, [])
 
   return (
     <React.Fragment>
@@ -94,34 +109,49 @@ export default function Album() {
         <Container className={classes.cardGrid} maxWidth="md">
           {/* End hero unit */}
           <Grid container spacing={4}>
-            {cards.map((card) => (
+            { !todos ? 'Cargando' :
+            todos.map((card) => (
               <Grid item key={card} xs={12} sm={6} md={4} key={card.name}>
                 <Card className={classes.card}>
                   <CardMedia
                     name={card.name}
                     className={classes.cardMedia}
-                    image={pdf}
+                    image={card.type == "file" ? pdf : carpeta }
                   />
                   <CardContent className={classes.cardContent}>
+
                     {/* <Typography gutterBottom variant="h5" component="h2">
                       {card.name}
                     </Typography> */}
+                    
                     <Typography>
                       {card.name}
                     </Typography>
                   </CardContent>
                   <CardActions>
-                    <Button href={"http://localhost:4000/api/directorios:" + card.path} size="small" color="primary" target="_blank">
-                      Abrir
-                    </Button>
-                    <a href={card.path} className = "btn btn-outline-secondary rounded-0" target="_blank">
-                      Abrir
-                    </a>
+                     {card.type == "file" ? 
+                      <Button href={card.path} size="small" color="primary" target="_blank">
+                        Ver Direccion
+                      </Button> : 
+                      <Button href={card.child} size="small" color="primary" target="_blank">
+                        Abrir Directorio
+                      </Button>}
+                      
+                      {/* <Button href={card.path} size="small" color="primary" target="_blank">
+                        Ver Direccion
+                      </Button>
+                      <a href={elemento} className = "btn btn-outline-secondary rounded-0" target="_blank">
+                        Abrir Documento
+                      </a> */}
+
                   </CardActions>
                 </Card>
               </Grid>
             ))}
           </Grid>
+        </Container>
+        <Container>
+          {visualizador}
         </Container>
       </main>
       {/* Footer */}
