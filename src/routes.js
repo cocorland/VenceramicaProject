@@ -7,11 +7,9 @@ function Routes() {
   return (
     <BrowserRouter>
       <Switch>
-        <Route exact path="/" component={App}/>
-        <Route exact path="/ver" component={visualizador}/>
-
+        <Route path="/" component={App} exact/>
+        <Route path="/ver" component={visualizador}/>
       </Switch>
-
     </BrowserRouter>
   );
 }
