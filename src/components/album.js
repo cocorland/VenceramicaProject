@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { GlobalContext } from '../context/GlobalContext';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
@@ -33,6 +33,11 @@ function Copyright() {
 function handleClick(event) {
   event.preventDefault();
   console.info('You clicked a breadcrumb.');
+}
+
+function handleClickAlbum(event) {
+  event.preventDefault();
+  console.log('Quieres entrar a una carpeta');
 }
 
 function SimpleBreadcrumbs() {
@@ -92,8 +97,9 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Album() {
   
-  const elementos = useContext(GlobalContext);
-  console.log(elementos.carpeta);
+  const { addState } = useContext(GlobalContext);
+  /* console.log(elementos); */
+  addState();
   const classes = useStyles();
   const url = 'http://localhost:4000/api/folders/';
   const [folders,setFolders] = useState()
@@ -137,7 +143,7 @@ export default function Album() {
                   <CardActions>
                     {card.type == "directory" ? 
                       <>
-                        <Button size="small" color="primary">
+                        <Button size="small" color="primary" onClick={handleClickAlbum}>
                           Abrir Directorio
                         </Button>
                       </> : 

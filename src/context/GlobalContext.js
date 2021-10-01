@@ -1,55 +1,23 @@
-import { createContext }  from 'react';
+import { createContext, useReducer }  from 'react';
+import appReducer from './AppReducer';
 
-/* const initialState = { 
-  "carpeta" : [
-    {
-      "path": "\\Users\\adminvencer\\Documents\\PasantiaOrlando\\POP_Directorios\\Ejemplo_2_PDF.pdf",
-      "name": "Ejemplo_2_PDF.pdf",
-      "size": 186239,
-      "extension": ".pdf",
-      "type": "file"
-    },
-    {
-      "path": "\\Users\\adminvencer\\Documents\\PasantiaOrlando\\POP_Directorios\\POP_Directorios_2",
-      "name": "POP_Directorios_2",
-      "children": [
-        {
-          "path": "\\Users\\adminvencer\\Documents\\PasantiaOrlando\\POP_Directorios\\POP_Directorios_2\\Ejemplo_3_PDF.pdf",
-          "name": "Ejemplo_3_PDF.pdf",
-          "size": 186634,
-          "extension": ".pdf",
-          "type": "file"
-        }
-      ],
-      "size": 186634,
-      "type": "directory"
-    }
-  ]
-} */
+export const TrialsContext = createContext({
+  "pruebita" : true
+});
 
-export const GlobalContext = createContext({ 
-  "carpeta" : [
-    {
-      "path": "\\Users\\adminvencer\\Documents\\PasantiaOrlando\\POP_Directorios\\Ejemplo_2_PDF.pdf",
-      "name": "Ejemplo_2_PDF.pdf",
-      "size": 186239,
-      "extension": ".pdf",
-      "type": "file"
-    },
-    {
-      "path": "\\Users\\adminvencer\\Documents\\PasantiaOrlando\\POP_Directorios\\POP_Directorios_2",
-      "name": "POP_Directorios_2",
-      "children": [
-        {
-          "path": "\\Users\\adminvencer\\Documents\\PasantiaOrlando\\POP_Directorios\\POP_Directorios_2\\Ejemplo_3_PDF.pdf",
-          "name": "Ejemplo_3_PDF.pdf",
-          "size": 186634,
-          "extension": ".pdf",
-          "type": "file"
-        }
-      ],
-      "size": 186634,
-      "type": "directory"
-    }
-  ]
-})
+const carpetaEnBlanco = {};
+
+export const GlobalContext = createContext(carpetaEnBlanco);
+
+export const ContextProvider = ({children}) => {
+
+  const addState = () => {
+    console.log("Colocando en el estado los elementos de /"); 
+  };
+
+  return (
+    <GlobalContext.Provider value={ { ...carpetaEnBlanco, addState} }>
+      {children}
+    </GlobalContext.Provider>
+  );
+};

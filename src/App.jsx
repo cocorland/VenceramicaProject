@@ -11,6 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import logo from './components/images/bathroom1.png';
+import { ContextProvider } from './context/GlobalContext';
 import './App.css'
 
 /**
@@ -98,7 +99,9 @@ const MainContent = () => {
         <div className="App">
             <AuthenticatedTemplate>
                 <ProfileContent />
-                <Album />
+                <ContextProvider>
+                  <Album />
+                </ContextProvider>
             </AuthenticatedTemplate>
 
             <UnauthenticatedTemplate>
