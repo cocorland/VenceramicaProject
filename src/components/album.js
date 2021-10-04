@@ -35,10 +35,6 @@ function handleClick(event) {
   console.info('You clicked a breadcrumb.');
 }
 
-function handleClickAlbum(event) {
-  event.preventDefault();
-  console.log('Quieres entrar a una carpeta');
-}
 
 function SimpleBreadcrumbs() {
   return (
@@ -96,10 +92,8 @@ const useStyles = makeStyles((theme) => ({
 // const cards = ;
 
 export default function Album() {
-  
-  const { addState } = useContext(GlobalContext);
-  /* console.log(elementos); */
-  addState();
+
+  const { openFolder } = useContext(GlobalContext);
   const classes = useStyles();
   const url = 'http://localhost:4000/api/folders/';
   const [folders,setFolders] = useState()
@@ -112,6 +106,12 @@ export default function Album() {
   useEffect(() => {
     fetchApi()
   }, [])
+  
+  function handleClickAlbum(event) {
+    event.preventDefault();
+    openFolder(folders);
+    /* Hasta aqui */
+  }
 
   return (
     <React.Fragment>
