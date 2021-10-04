@@ -1,6 +1,6 @@
 # Single-Page Application Front-End desarrollado para Venceramica Venezuela
 
-La empresa Venezolana de Cerámicas de Venezuela necesita una aplicación web que le permita a sus empleados la lectura de los archivos almacenados su base de datos principal. Por ello nace el Proyecto Omni-Page (POP) descrito a continuación.
+La Empresa Venezolana de Cerámicas de Venezuela necesita una aplicación web que le permita a sus empleados la lectura de los archivos almacenados en su base de datos principal. Debido a esto nace el Proyecto Omni-Page (POP) descrito a continuación.
 
 ## Características
 
