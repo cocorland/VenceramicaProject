@@ -7,8 +7,8 @@ export default function AppReducer(state, action) {
     
     /* Para las pruebas, le estoy pasando {type: 'OPEN_FOLDER'} este seria el parametro 'action' */
     
-    console.log(state, action);
+    /* console.log(action.payload); */
     return {
-        carpetas: [...state.carpetas, action.payload],
+        carpetas: [...action.payload],
     };
 }

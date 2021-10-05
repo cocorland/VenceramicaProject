@@ -72,7 +72,7 @@ const ProfileContent = () => {
             <Typography component="h1" variant="h4" align="center" color="textPrimary" gutterBottom>
                 Bienvenido(a) {accounts[0].name}
             </Typography>
-            <Typography variant="h7" align="center" color="textSecondary" paragraph>
+            <Typography variant="subtitle2" align="center" color="textSecondary" paragraph>
                 Te damos la bienvenida al sistema de visualización de archivos de Vencerámica, Venezuela. Te encuentras en
                 el servidor principal. Utilizando el sistema de navegación por tarjetas puedes dirigirte al archivo que
                 necesitas, o puedes utilizar el buscador en la barra de tareas.

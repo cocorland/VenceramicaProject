@@ -35,10 +35,9 @@ function handleClick(event) {
   console.info('You clicked a breadcrumb.');
 }
 
-
 function SimpleBreadcrumbs() {
   return (
-    <Breadcrumbs aria-label="breadcrumb" align="center" variant="outlined">
+    <Breadcrumbs aria-label="breadcrumb" align="center">
       <Link color="inherit" href="/" onClick={handleClick}>
         c
       </Link>
@@ -94,6 +93,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Album() {
 
   const { openFolder } = useContext(GlobalContext);
+  const context = useContext(GlobalContext);
   const classes = useStyles();
   const url = 'http://localhost:4000/api/folders/';
   const [folders,setFolders] = useState()
@@ -111,7 +111,7 @@ export default function Album() {
     event.preventDefault();
     openFolder(folders);
     /* Hasta aqui */
-  }
+  };
 
   return (
     <React.Fragment>
@@ -125,7 +125,7 @@ export default function Album() {
           {/* End hero unit */}
           <Grid container spacing={4}>
             { !folders ? 'Cargando' :
-            folders.map((card) => (
+            context.carpetas.map((card) => (
               <Grid item key={card} xs={12} sm={6} md={4} key={card.name}>
                 <Card className={classes.card}>
                   <CardMedia
@@ -143,11 +143,11 @@ export default function Album() {
                   <CardActions>
                     {card.type == "directory" ? 
                       <>
-                        <Button size="small" color="primary" onClick={handleClickAlbum}>
+                        <Button size="small" onClick={handleClickAlbum}>
                           Abrir Directorio
                         </Button>
                       </> : 
-                      <Button href={"http://localhost:5000/" + card.name} size="small" color="primary" target="_blank">
+                      <Button href={"http://localhost:5000/" + card.name} size="small" target="_blank">
                         Ver
                       </Button>
                     }

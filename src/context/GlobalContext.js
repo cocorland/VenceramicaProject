@@ -8,10 +8,11 @@ export const TrialsContext = createContext({
 const carpetaEnBlanco = {
   carpetas: [
     {
-      "pruebita" : "true",
-    },
-    {
-      "pruebita" : "false",
+      "path": "\\Users\\adminvencer\\Documents\\PasantiaOrlando",
+      "name": "Servidor Principal",
+      "children": [],
+      "size": 0,
+      "type": "directory"
     },
   ],
 };
@@ -28,8 +29,8 @@ export const ContextProvider = ({children}) => {
 
   /* Aqui debo añadir una funcion que me permita cambiar de directorio (openFolder). */
   const openFolder = (folders) => {
-    //console.log(folders);
-    dispatch({type: 'OPEN_FOLDER', payload: 'nuevo'})
+    /* console.log(folders); */
+    dispatch({type: 'OPEN_FOLDER', payload: folders });
   }
 
   /* El value esta pasando en este momento el carpetaEnBlanco (initialState), tambien vamos a pasar la funcion openFolder */
