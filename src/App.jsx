@@ -6,12 +6,11 @@ import { ProfileData } from "./components/ProfileData";
 import { callMsGraph } from "./graph";
 import Button from "react-bootstrap/Button";
 import "./styles/App.css";
-import Album from "./components/album";
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import logo from './components/images/bathroom1.png';
-import { ContextProvider } from './context/GlobalContext';
+import { Link, useHistory, Redirect } from 'react-router-dom';
 import './App.css'
 
 /**
@@ -94,14 +93,15 @@ const ProfileContent = () => {
 /**
  * If a user is authenticated the ProfileContent component above is rendered. Otherwise a message indicating a user is not authenticated is rendered.
  */
+
 const MainContent = () => {    
+  const history = useHistory();
     return (
         <div className="App">
             <AuthenticatedTemplate>
                 <ProfileContent />
-                <ContextProvider>
-                  <Album />
-                </ContextProvider>
+                <Redirect to="/GAF" />
+
             </AuthenticatedTemplate>
 
             <UnauthenticatedTemplate>

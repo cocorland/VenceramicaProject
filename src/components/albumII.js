@@ -12,7 +12,6 @@ import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import visualizador from './visualizador';
-import {Link as LinkRoute} from 'react-router-dom'
 import pdf from './images/Archivo.png';
 import carpeta from './images/FolderImg.png';
 import './album.css'
@@ -40,6 +39,9 @@ function SimpleBreadcrumbs() {
     <Breadcrumbs aria-label="breadcrumb" align="center">
       <Link color="inherit" href="/" onClick={handleClick}>
         Gerencia de Administración y Finanzas
+      </Link>
+      <Link color="inherit" href="/" onClick={handleClick}>
+        Nivel 2
       </Link>
       {/* <Typography color="textPrimary">PasantiaOrlando</Typography> */}
     </Breadcrumbs>
@@ -85,7 +87,6 @@ export default function Album() {
 
   const classes = useStyles();
   const url = 'http://localhost:4000/api/folders/';
-  const url2 = 'http://localhost:5000/';
   const [folders,setFolders] = useState()
   const fetchApi = async () => {
     const response = await fetch(url)
@@ -97,12 +98,6 @@ export default function Album() {
     fetchApi()
   }, [])
   
-  function handleOpen(event, cards, name, url2) {
-    event.preventDefault();
-    setFolders([...cards]);
-    return url2='http://localhost:5000/' + name
-  };
-
   return (
     <React.Fragment>
       <CssBaseline />
@@ -133,11 +128,11 @@ export default function Album() {
                   <CardActions>
                     {card.type == "directory" ? 
                       <>
-                        <LinkRoute size="small" onClick={(event) => handleOpen(event, [...card.children], card.name, url2)}>
+                        <Button size="small">
                           Abrir Directorio
-                        </LinkRoute>
+                        </Button>
                       </> : 
-                      <Button href={url2 + card.name} size="small" target="_blank">
+                      <Button href={"http://localhost:5000/" + card.name} size="small" target="_blank">
                         Ver
                       </Button>
                     }
