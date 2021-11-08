@@ -21,7 +21,7 @@ export const SignOutButton = () => {
         }
     }
     return (
-        <Button class="btn btn-primary" variant="primary" className="ml-auto" drop="left" onClick={() => handleLogout("redirect")}>
+        <Button className="btn btn-primary" variant="contained" color="secondary" drop="left" onClick={() => handleLogout("redirect")}>
             Cerrar Sesión
         </Button>
     )

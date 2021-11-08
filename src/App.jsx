@@ -10,8 +10,8 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import logo from './components/images/bathroom1.png';
-import { Link, useHistory, Redirect } from 'react-router-dom';
 import './App.css'
+import Album from "./components/album";
 
 /**
  * Renders information about the signed-in user or a button to retrieve data about the user
@@ -95,12 +95,12 @@ const ProfileContent = () => {
  */
 
 const MainContent = () => {    
-  const history = useHistory();
+  
     return (
         <div className="App">
             <AuthenticatedTemplate>
                 <ProfileContent />
-                <Redirect to="/GAF" />
+                <Album />
 
             </AuthenticatedTemplate>
 
@@ -108,7 +108,7 @@ const MainContent = () => {
                 <Typography component="h1" variant="h4" align="center" color="textPrimary" gutterBottom>
                     Bienvenido(a) al Sistema de Visualización de Archivos de Vencerámica
                 </Typography>
-                <Typography variant="h7" align="center" color="textSecondary" paragraph>
+                <Typography variant="h6" align="center" color="textSecondary" paragraph>
                     Por favor, Inicie sesión con su cuenta @venceramica.com.
                 </Typography>
                 <br></br>

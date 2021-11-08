@@ -11,11 +11,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
-import visualizador from './visualizador';
-import {Link as LinkRoute} from 'react-router-dom'
 import pdf from './images/Archivo.png';
 import carpeta from './images/FolderImg.png';
-import './album.css'
+import './album.css';
+import { useHistory, useLocation, useParams, useRouteMatch } from 'react-router';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 function Copyright() {
   return (
@@ -31,20 +31,23 @@ function Copyright() {
 }
 
 function handleClick(event) {
-  event.preventDefault();
+  /* event.preventDefault(); */
+  // En esta funcion debo eliminar todos los elementos de la lista del breadcrumb que esten despues del elemento seleccionado, es decir esta funcion debe tener un setState que me permita borrar elementos de mi estado.
   console.info('You clicked a breadcrumb.');
 }
 
-function SimpleBreadcrumbs() {
+const SimpleBreadcrumbs = ({lista}) => {
+
   return (
     <Breadcrumbs aria-label="breadcrumb" align="center">
-      <Link color="inherit" href="/" onClick={handleClick}>
-        Gerencia de Administración y Finanzas
-      </Link>
-      {/* <Typography color="textPrimary">PasantiaOrlando</Typography> */}
-    </Breadcrumbs>
-  );
-}
+        {lista.map( (directorioRecorrido) => (
+          <Link key={directorioRecorrido} color="inherit" href="/" onClick={handleClick}>
+            {directorioRecorrido}
+          </Link>))}
+      </Breadcrumbs> 
+    )
+};
+
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -84,23 +87,50 @@ const useStyles = makeStyles((theme) => ({
 export default function Album() {
 
   const classes = useStyles();
-  const url = 'http://localhost:4000/api/folders/';
-  const url2 = 'http://localhost:5000/';
-  const [folders,setFolders] = useState()
+  const [breadcrumb, setBreadcrumb] = useState(['Pasantia Orlando']);
+  const url_name = 'http://localhost:4000/api/folders/';
+  const [urlApi, setUrlApi] = useState('http://localhost:5000');
+  const [folders,setFolders] = useState();
+  const location = useLocation();
+  let history = useHistory();
+  let match = useRouteMatch();
+  let {path, url, params} = useRouteMatch();
+
+  useEffect(() => {
+    console.log("mi useRouteMatch es: ", match );
+    console.log("mi ruta es: ", url);
+    
+  }, [location])
+
   const fetchApi = async () => {
-    const response = await fetch(url)
-    console.log(response.status)
-    const responseJSON = await response.json()
-    setFolders(responseJSON)
+    try {
+      const response = await fetch(url_name)
+      console.log(response.status)
+      const responseJSON = await response.json()
+      setFolders(responseJSON)
+    } catch (error) {
+      console.log(error)
+    }
   }
+
   useEffect(() => {
     fetchApi()
   }, [])
-  
-  function handleOpen(event, cards, name, url2) {
-    event.preventDefault();
+
+  function handleOpen(event, cards, nombre, urlApi) {
+    /* event.preventDefault(); */
+    setUrlApi( `${urlApi}/${ encodeURI(nombre) }`);
     setFolders([...cards]);
-    return url2='http://localhost:5000/' + name
+    setBreadcrumb([...breadcrumb, nombre]);
+    
+    
+    { !params.directory ? history.push(`${nombre}`) : history.push(`${params.directory}/${nombre}/`) }
+    console.log("Mi url: ", url );
+
+
+/*     history.push(`${url}/${nombre}`)
+    { !} */
+    
   };
 
   return (
@@ -108,13 +138,13 @@ export default function Album() {
       <CssBaseline />
       <main>
         <Container className={classes.cardGrid} maxWidth="md">
-          <SimpleBreadcrumbs align="center"/> 
+          <SimpleBreadcrumbs lista={[...breadcrumb]} /> 
         </Container>
         {/* Hero unit */}
         <Container className={classes.cardGrid} maxWidth="md">
           {/* End hero unit */}
           <Grid container spacing={4}>
-            { !folders ? 'Cargando' :
+            { !folders ? ' No se ha podido acceder a los datos del servidor. ' :
             folders.map((card) => (
               <Grid item key={card} xs={12} sm={6} md={4} key={card.name}>
                 <Card className={classes.card}>
@@ -125,19 +155,20 @@ export default function Album() {
                   />
                   <CardContent className={classes.cardContent}>
 
-                    <Typography gutterBottom variant="h6" component="h2">
+                    <Typography>
                       {card.name}
                     </Typography>
+                    <hr />
 
                   </CardContent>
                   <CardActions>
                     {card.type == "directory" ? 
                       <>
-                        <LinkRoute size="small" onClick={(event) => handleOpen(event, [...card.children], card.name, url2)}>
+                        <Button size="small" onClick={(event) => handleOpen(event, [...card.children], card.name, urlApi)}>
                           Abrir Directorio
-                        </LinkRoute>
+                        </Button>
                       </> : 
-                      <Button href={url2 + card.name} size="small" target="_blank">
+                      <Button href={`${urlApi}/${card.name}`} size="small" target="_blank">
                         Ver
                       </Button>
                     }
