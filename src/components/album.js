@@ -30,37 +30,41 @@ function Copyright() {
   );
 }
 
-function handleClick(event, setFolders) {
+function handleClick(event, breadcrumb, setBreadcrumb, setFolders) {
   /* event.preventDefault(); */
   // En esta funcion debo eliminar todos los elementos de la lista del breadcrumb que esten despues del elemento seleccionado, es decir esta funcion debe tener un setState que me permita borrar elementos de mi estado.
   
   setFolders (
     [
       {
-      "path": "\Users\adminvencer\Documents\PasantiaOrlando\Facturas Importantes.pdf",
-      "name": "¡AY RUTHLEIDI!",
-      "size": 380533,
-      "extension": ".pdf",
-      "type": "file"
+      "path": "\Users\adminvencer\Documents\PasantiaOrlando\Carpeta Vacias",
+      "name": "Carpeta Vacias",
+      "children": [],
+      "size": 0,
+      "type": "directory"
       }
     ]
   );
 
+  let arreglo = [...breadcrumb]
+  arreglo.pop();
+  setBreadcrumb( arreglo );
+
   console.info('You clicked a breadcrumb.');
 }
 
-const SimpleBreadcrumbs = ( { lista , setFolders} ) => {
+const SimpleBreadcrumbs = ( { breadcrumb, setBreadcrumb, setFolders} ) => {
 
-  let arreglo = [...lista]
+  let arreglo = [...breadcrumb]
   arreglo.pop();
 
   return (
     <Breadcrumbs separator="›" aria-label="breadcrumb" align="center">
         {arreglo.map( (directorioRecorrido) => (
-          <Link underline="hover" color="primary" key={directorioRecorrido} onClick={(event) => handleClick(event, setFolders) }>
+          <Link underline="hover" color="primary" key={directorioRecorrido} onClick={(event) => handleClick(event, [...breadcrumb], setBreadcrumb, setFolders) }>
             {directorioRecorrido}
           </Link>))}
-        <Typography color="inherit">{ lista[lista.length - 1] }</Typography>
+        <Typography color="inherit">{ breadcrumb[breadcrumb.length - 1] }</Typography>
       </Breadcrumbs> 
     )
 };
@@ -156,7 +160,7 @@ export default function Album() {
       <CssBaseline />
       <main>
         <Container className={classes.cardGrid} maxWidth="md">
-          <SimpleBreadcrumbs lista={[...breadcrumb]} setFolders={setFolders} /> 
+          <SimpleBreadcrumbs breadcrumb={[...breadcrumb]} setBreadcrumb={ setBreadcrumb } setFolders={setFolders} /> 
         </Container>
         {/* Hero unit */}
         <Container className={classes.cardGrid} maxWidth="md">
