@@ -30,20 +30,37 @@ function Copyright() {
   );
 }
 
-function handleClick(event) {
+function handleClick(event, setFolders) {
   /* event.preventDefault(); */
   // En esta funcion debo eliminar todos los elementos de la lista del breadcrumb que esten despues del elemento seleccionado, es decir esta funcion debe tener un setState que me permita borrar elementos de mi estado.
+  
+  setFolders (
+    [
+      {
+      "path": "\Users\adminvencer\Documents\PasantiaOrlando\Facturas Importantes.pdf",
+      "name": "¡AY RUTHLEIDI!",
+      "size": 380533,
+      "extension": ".pdf",
+      "type": "file"
+      }
+    ]
+  );
+
   console.info('You clicked a breadcrumb.');
 }
 
-const SimpleBreadcrumbs = ({lista}) => {
+const SimpleBreadcrumbs = ( { lista , setFolders} ) => {
+
+  let arreglo = [...lista]
+  arreglo.pop();
 
   return (
-    <Breadcrumbs aria-label="breadcrumb" align="center">
-        {lista.map( (directorioRecorrido) => (
-          <Link key={directorioRecorrido} color="inherit" href="/" onClick={handleClick}>
+    <Breadcrumbs separator="›" aria-label="breadcrumb" align="center">
+        {arreglo.map( (directorioRecorrido) => (
+          <Link underline="hover" color="primary" key={directorioRecorrido} onClick={(event) => handleClick(event, setFolders) }>
             {directorioRecorrido}
           </Link>))}
+        <Typography color="inherit">{ lista[lista.length - 1] }</Typography>
       </Breadcrumbs> 
     )
 };
@@ -89,7 +106,7 @@ export default function Album() {
   const classes = useStyles();
   const [breadcrumb, setBreadcrumb] = useState(['Pasantia Orlando']);
   const url_name = 'http://localhost:4000/api/folders/';
-  const [urlApi, setUrlApi] = useState('http://localhost:5000');
+  const [urlApiServe, setUrlApiServe] = useState('http://localhost:5000');
   const [folders,setFolders] = useState();
   const location = useLocation();
   let history = useHistory();
@@ -97,10 +114,11 @@ export default function Album() {
   let {path, url, params} = useRouteMatch();
 
   useEffect(() => {
-    console.log("mi useRouteMatch es: ", match );
-    console.log("mi ruta es: ", url);
+    /* console.log("mi useRouteMatch es: ", match ); */
+    /* console.log("mi ruta es: ", url); */
+    console.log( breadcrumb );
     
-  }, [location])
+  }, [ breadcrumb ]);
 
   const fetchApi = async () => {
     try {
@@ -119,13 +137,13 @@ export default function Album() {
 
   function handleOpen(event, cards, nombre, urlApi) {
     /* event.preventDefault(); */
-    setUrlApi( `${urlApi}/${ encodeURI(nombre) }`);
+    setUrlApiServe( `${urlApi}/${ encodeURI(nombre) }`);
     setFolders([...cards]);
     setBreadcrumb([...breadcrumb, nombre]);
     
     
     { !params.directory ? history.push(`${nombre}`) : history.push(`${params.directory}/${nombre}/`) }
-    console.log("Mi url: ", url );
+    /* console.log("Mi url: ", url ); */
 
 
 /*     history.push(`${url}/${nombre}`)
@@ -138,7 +156,7 @@ export default function Album() {
       <CssBaseline />
       <main>
         <Container className={classes.cardGrid} maxWidth="md">
-          <SimpleBreadcrumbs lista={[...breadcrumb]} /> 
+          <SimpleBreadcrumbs lista={[...breadcrumb]} setFolders={setFolders} /> 
         </Container>
         {/* Hero unit */}
         <Container className={classes.cardGrid} maxWidth="md">
@@ -164,11 +182,11 @@ export default function Album() {
                   <CardActions>
                     {card.type == "directory" ? 
                       <>
-                        <Button size="small" onClick={(event) => handleOpen(event, [...card.children], card.name, urlApi)}>
+                        <Button size="small" onClick={(event) => handleOpen(event, [...card.children], card.name, urlApiServe)}>
                           Abrir Directorio
                         </Button>
                       </> : 
-                      <Button href={`${urlApi}/${card.name}`} size="small" target="_blank">
+                      <Button href={`${urlApiServe}/${card.name}`} size="small" target="_blank">
                         Ver
                       </Button>
                     }
