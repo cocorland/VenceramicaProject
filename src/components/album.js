@@ -30,10 +30,19 @@ function Copyright() {
   );
 }
 
-function handleClick(event, breadcrumb, setBreadcrumb, setFolders) {
-  /* event.preventDefault(); */
+function handleClick(event, breadcrumb, setBreadcrumb, setFolders ) {
   // En esta funcion debo eliminar todos los elementos de la lista del breadcrumb que esten despues del elemento seleccionado, es decir esta funcion debe tener un setState que me permita borrar elementos de mi estado.
   
+  console.log("La informacion de mi evento es: ", event.target.innerText);
+    
+  const EsElIndicado = (element) => element === event.target.innerText;
+
+  /* console.log('El elemento que introduci para truncar el breadcrumb es: ', breadcrumb.findIndex(EsElIndicado)); */
+
+  breadcrumb.length = breadcrumb.findIndex(EsElIndicado) + 1;
+
+  /* console.log('Mi breadcrumb es: ', breadcrumb); */
+
   setFolders (
     [
       {
@@ -45,15 +54,16 @@ function handleClick(event, breadcrumb, setBreadcrumb, setFolders) {
       }
     ]
   );
+  
 
-  let arreglo = [...breadcrumb]
-  arreglo.pop();
-  setBreadcrumb( arreglo );
+  /* let arreglo = [...breadcrumb]
+  arreglo.pop(); */
+  setBreadcrumb( breadcrumb );
 
   console.info('You clicked a breadcrumb.');
 }
 
-const SimpleBreadcrumbs = ( { breadcrumb, setBreadcrumb, setFolders} ) => {
+const SimpleBreadcrumbs = ( { breadcrumb, setBreadcrumb, setFolders } ) => {
 
   let arreglo = [...breadcrumb]
   arreglo.pop();
@@ -61,7 +71,7 @@ const SimpleBreadcrumbs = ( { breadcrumb, setBreadcrumb, setFolders} ) => {
   return (
     <Breadcrumbs separator="›" aria-label="breadcrumb" align="center">
         {arreglo.map( (directorioRecorrido) => (
-          <Link underline="hover" color="primary" key={directorioRecorrido} onClick={(event) => handleClick(event, [...breadcrumb], setBreadcrumb, setFolders) }>
+          <Link underline="hover" color="primary" key={directorioRecorrido} onClick={ ( event ) => handleClick( event, [...breadcrumb], setBreadcrumb, setFolders ) }>
             {directorioRecorrido}
           </Link>))}
         <Typography color="inherit">{ breadcrumb[breadcrumb.length - 1] }</Typography>
@@ -160,7 +170,7 @@ export default function Album() {
       <CssBaseline />
       <main>
         <Container className={classes.cardGrid} maxWidth="md">
-          <SimpleBreadcrumbs breadcrumb={[...breadcrumb]} setBreadcrumb={ setBreadcrumb } setFolders={setFolders} /> 
+          <SimpleBreadcrumbs breadcrumb={ [...breadcrumb] } setBreadcrumb={ setBreadcrumb } setFolders={setFolders} /> 
         </Container>
         {/* Hero unit */}
         <Container className={classes.cardGrid} maxWidth="md">
