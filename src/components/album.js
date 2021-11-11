@@ -14,10 +14,13 @@ import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import pdf from './images/Archivo.png';
 import carpeta from './images/FolderImg.png';
 import './album.css';
-import { useHistory, useLocation, useParams, useRouteMatch } from 'react-router';
+/* import { useHistory, useLocation, useParams, useRouteMatch } from 'react-router'; */
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 function Copyright() {
+  /* Complemento del Footer.
+  Componente renderizado para complementar el Footer. */
+
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
@@ -30,40 +33,29 @@ function Copyright() {
   );
 }
 
-function handleClick(event, breadcrumb, setBreadcrumb, setFolders ) {
-  // En esta funcion debo eliminar todos los elementos de la lista del breadcrumb que esten despues del elemento seleccionado, es decir esta funcion debe tener un setState que me permita borrar elementos de mi estado.
-  
-  console.log("La informacion de mi evento es: ", event.target.innerText);
+function handleClick(event, breadcrumb, setBreadcrumb, setFolders, recorrido, setRecorrido ) {
+  /* Manejador de eventos.
+  Controla las acciones que se realizan al hacer click en cualquiera de los niveles del breadcrumb */ 
     
-  const EsElIndicado = (element) => element === event.target.innerText;
-
-  /* console.log('El elemento que introduci para truncar el breadcrumb es: ', breadcrumb.findIndex(EsElIndicado)); */
-
-  breadcrumb.length = breadcrumb.findIndex(EsElIndicado) + 1;
-
-  /* console.log('Mi breadcrumb es: ', breadcrumb); */
+  let historial = [...recorrido];
+  const breadcrumbClickeado = (element) => element === event.target.innerText;
+  const longitud = breadcrumb.findIndex(breadcrumbClickeado) + 1
+  console.log("La longitud que debe tener mi breadcrumb es: ", longitud);
+  breadcrumb.length = longitud;
+  historial.length = longitud;
+  console.log("Mi historial es: ", historial);
+  setRecorrido([...historial]);
 
   setFolders (
-    [
-      {
-      "path": "\Users\adminvencer\Documents\PasantiaOrlando\Carpeta Vacias",
-      "name": "Carpeta Vacias",
-      "children": [],
-      "size": 0,
-      "type": "directory"
-      }
-    ]
+    recorrido[longitud]
   );
   
-
-  /* let arreglo = [...breadcrumb]
-  arreglo.pop(); */
   setBreadcrumb( breadcrumb );
-
-  console.info('You clicked a breadcrumb.');
 }
 
-const SimpleBreadcrumbs = ( { breadcrumb, setBreadcrumb, setFolders } ) => {
+const SimpleBreadcrumbs = ( { breadcrumb, setBreadcrumb, setFolders, recorrido, setRecorrido } ) => {
+  /* Componente encargado de la renderizacion del breadcrumb.
+  Todos los elementos anteriores al ultimo deben ser clickeables. El ultimo elemento indica en que nivel del directorio estoy. */
 
   let arreglo = [...breadcrumb]
   arreglo.pop();
@@ -71,7 +63,7 @@ const SimpleBreadcrumbs = ( { breadcrumb, setBreadcrumb, setFolders } ) => {
   return (
     <Breadcrumbs separator="›" aria-label="breadcrumb" align="center">
         {arreglo.map( (directorioRecorrido) => (
-          <Link underline="hover" color="primary" key={directorioRecorrido} onClick={ ( event ) => handleClick( event, [...breadcrumb], setBreadcrumb, setFolders ) }>
+          <Link underline="hover" color="primary" key={directorioRecorrido} onClick={ ( event ) => handleClick( event, [...breadcrumb], setBreadcrumb, setFolders, [...recorrido], setRecorrido ) }>
             {directorioRecorrido}
           </Link>))}
         <Typography color="inherit">{ breadcrumb[breadcrumb.length - 1] }</Typography>
@@ -118,22 +110,16 @@ const useStyles = makeStyles((theme) => ({
 export default function Album() {
 
   const classes = useStyles();
+  const [recorrido, setRecorrido] = useState([]);
   const [breadcrumb, setBreadcrumb] = useState(['Pasantia Orlando']);
   const url_name = 'http://localhost:4000/api/folders/';
   const [urlApiServe, setUrlApiServe] = useState('http://localhost:5000');
   const [folders,setFolders] = useState();
-  const location = useLocation();
-  let history = useHistory();
-  let match = useRouteMatch();
-  let {path, url, params} = useRouteMatch();
-
-  useEffect(() => {
-    /* console.log("mi useRouteMatch es: ", match ); */
-    /* console.log("mi ruta es: ", url); */
-    console.log( breadcrumb );
-    
-  }, [ breadcrumb ]);
-
+  /* const location = useLocation(); */
+  /* let history = useHistory(); */
+  /* let match = useRouteMatch(); */
+  /* let {path, url, params} = useRouteMatch(); */
+  
   const fetchApi = async () => {
     try {
       const response = await fetch(url_name)
@@ -144,10 +130,16 @@ export default function Album() {
       console.log(error)
     }
   }
+  
+  useEffect(() => {
+    fetchApi();
+  }, [])
 
   useEffect(() => {
-    fetchApi()
-  }, [])
+    setRecorrido([...recorrido, folders]);
+
+  }, [folders])
+  
 
   function handleOpen(event, cards, nombre, urlApi) {
     /* event.preventDefault(); */
@@ -155,14 +147,11 @@ export default function Album() {
     setFolders([...cards]);
     setBreadcrumb([...breadcrumb, nombre]);
     
-    
-    { !params.directory ? history.push(`${nombre}`) : history.push(`${params.directory}/${nombre}/`) }
+    /* { !params.directory ? history.push(`${nombre}`) : history.push(`${params.directory}/${nombre}/`) } */
     /* console.log("Mi url: ", url ); */
-
 
 /*     history.push(`${url}/${nombre}`)
     { !} */
-    
   };
 
   return (
@@ -170,7 +159,7 @@ export default function Album() {
       <CssBaseline />
       <main>
         <Container className={classes.cardGrid} maxWidth="md">
-          <SimpleBreadcrumbs breadcrumb={ [...breadcrumb] } setBreadcrumb={ setBreadcrumb } setFolders={setFolders} /> 
+          <SimpleBreadcrumbs breadcrumb={ [...breadcrumb] } setBreadcrumb={ setBreadcrumb } setFolders={setFolders} recorrido={recorrido} setRecorrido={setRecorrido} /> 
         </Container>
         {/* Hero unit */}
         <Container className={classes.cardGrid} maxWidth="md">
@@ -187,7 +176,7 @@ export default function Album() {
                   />
                   <CardContent className={classes.cardContent}>
 
-                    <Typography>
+                    <Typography variant="subtitle1" gutterBottom component="div">
                       {card.name}
                     </Typography>
                     <hr />
