@@ -40,10 +40,8 @@ function handleClick(event, breadcrumb, setBreadcrumb, setFolders, recorrido, se
   let historial = [...recorrido];
   const breadcrumbClickeado = (element) => element === event.target.innerText;
   const longitud = breadcrumb.findIndex(breadcrumbClickeado) + 1
-  console.log("La longitud que debe tener mi breadcrumb es: ", longitud);
   breadcrumb.length = longitud;
   historial.length = longitud;
-  console.log("Mi historial es: ", historial);
   setRecorrido([...historial]);
 
   setFolders (
@@ -114,6 +112,7 @@ export default function Album() {
   const [breadcrumb, setBreadcrumb] = useState(['Pasantia Orlando']);
   const url_name = 'http://localhost:4000/api/folders/';
   const [urlApiServe, setUrlApiServe] = useState('http://localhost:5000');
+  const [buscar, setBuscar] = useState('https:localhost:5000');
   const [folders,setFolders] = useState();
   /* const location = useLocation(); */
   /* let history = useHistory(); */
@@ -138,7 +137,14 @@ export default function Album() {
   useEffect(() => {
     setRecorrido([...recorrido, folders]);
 
-  }, [folders])
+  }, [folders]);
+
+  useEffect(() => {
+    
+    console.log("Esta es mi ruta: ", urlApiServe)
+  }, [breadcrumb]);
+
+  
   
 
   function handleOpen(event, cards, nombre, urlApi) {

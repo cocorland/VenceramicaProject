@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
   }));
 
   /**
-   * Renders the navbar component with a sign-in or sign-out button depending on whether or not a user is authenticated
+   * Renderiza el Componente Navbar con un boton de log-in o log-out dependiendo de si el usuario esta autenticado o no.
    * @param props 
    */
 
