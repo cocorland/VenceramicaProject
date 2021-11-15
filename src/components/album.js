@@ -11,8 +11,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
-import pdf from './images/Archivo.png';
-import carpeta from './images/FolderImg.png';
+import pdf from './images/PDF.png';
+import jpg from './images/JPG.png';
+import doc from './images/DOC.png';
+import file from './images/FILE.png';
+import carpeta from './images/FOLDER.png';
 import './album.css';
 /* import { useHistory, useLocation, useParams, useRouteMatch } from 'react-router'; */
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
@@ -109,7 +112,7 @@ export default function Album() {
 
   const classes = useStyles();
   const [recorrido, setRecorrido] = useState([]);
-  const [breadcrumb, setBreadcrumb] = useState(['Pasantia Orlando']);
+  const [breadcrumb, setBreadcrumb] = useState(['GCIA. ADMÓN Y FINANZAS']);
   const url_name = 'http://localhost:4000/api/folders/';
   const [urlApiServe, setUrlApiServe] = useState('http://localhost:5000');
   const [buscar, setBuscar] = useState('https:localhost:5000');
@@ -144,8 +147,20 @@ export default function Album() {
     console.log("Esta es mi ruta: ", urlApiServe)
   }, [breadcrumb]);
 
-  
-  
+
+  const displayImage = (param) => {
+    switch(param) {
+      case param = '.pdf':
+        return pdf;
+      case param = '.jpg':
+        return jpg;
+      case param = '.docx':
+        return doc;
+      default:
+        return file;
+    }
+  }
+
 
   function handleOpen(event, cards, nombre, urlApi) {
     /* event.preventDefault(); */
@@ -178,7 +193,7 @@ export default function Album() {
                   <CardMedia
                     name={card.name}
                     className={classes.cardMedia}
-                    image={card.type == "file" ? pdf : carpeta }
+                    image={ card.type == "directory" ? carpeta : displayImage(card.extension) }
                   />
                   <CardContent className={classes.cardContent}>
 
