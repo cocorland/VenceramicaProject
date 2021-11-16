@@ -73,6 +73,9 @@ const useStyles = makeStyles((theme) => ({
 
 /* Fin de los estilos del buscador */
 
+const handleChange = (e) => {
+    console.log( e.target );
+}
 
 /**
  * Renders a sign-out button
@@ -106,6 +109,7 @@ export const SignOutButton = () => {
                         input: classes.inputInput,
                     }}
                     inputProps={{ 'aria-label': 'search' }}
+                    onChange={ handleChange }
                 />
             </div>
             

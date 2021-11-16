@@ -114,7 +114,6 @@ export default function Album() {
   const [recorrido, setRecorrido] = useState([]);
   const [breadcrumb, setBreadcrumb] = useState(['PasantiaOrlando']);
   const url_name = 'http://localhost:4000/api/folders/';
-  const [urlApiServe, setUrlApiServe] = useState('http://localhost:5000');
   const [buscar, setBuscar] = useState('https:localhost:5000');
   const [folders,setFolders] = useState();
   /* const location = useLocation(); */
@@ -166,9 +165,8 @@ export default function Album() {
   }
 
 
-  function handleOpen(event, cards, nombre, urlApi) {
+  function handleOpen(event, cards, nombre) {
     /* event.preventDefault(); */
-    setUrlApiServe( `${urlApi}/${ encodeURI(nombre) }`);
     setFolders([...cards]);
     setBreadcrumb([...breadcrumb, nombre]);
     
@@ -210,7 +208,7 @@ export default function Album() {
                   <CardActions>
                     {card.type == "directory" ? 
                       <>
-                        <Button size="small" onClick={(event) => handleOpen(event, [...card.children], card.name, urlApiServe)}>
+                        <Button size="small" onClick={(event) => handleOpen(event, [...card.children], card.name)}>
                           Abrir Directorio
                         </Button>
                       </> : 
