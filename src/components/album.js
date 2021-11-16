@@ -112,7 +112,7 @@ export default function Album() {
 
   const classes = useStyles();
   const [recorrido, setRecorrido] = useState([]);
-  const [breadcrumb, setBreadcrumb] = useState(['GCIA. ADMÓN Y FINANZAS']);
+  const [breadcrumb, setBreadcrumb] = useState(['PasantiaOrlando']);
   const url_name = 'http://localhost:4000/api/folders/';
   const [urlApiServe, setUrlApiServe] = useState('http://localhost:5000');
   const [buscar, setBuscar] = useState('https:localhost:5000');
@@ -144,8 +144,12 @@ export default function Album() {
 
   useEffect(() => {
     
-    console.log("Esta es mi ruta: ", urlApiServe)
-  }, [breadcrumb]);
+    let caminito = breadcrumb.map( (ruta) => encodeURI(ruta) );
+    caminito.shift();
+    let ruta2 = 'http://localhost:5000/' + caminito.join('/');
+    setBuscar(ruta2);
+
+  }, [folders]);
 
 
   const displayImage = (param) => {
@@ -210,7 +214,7 @@ export default function Album() {
                           Abrir Directorio
                         </Button>
                       </> : 
-                      <Button href={`${urlApiServe}/${card.name}`} size="small" target="_blank">
+                      <Button href={`${buscar}/${card.name}`} size="small" target="_blank">
                         Ver
                       </Button>
                     }
