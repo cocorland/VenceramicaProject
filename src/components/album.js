@@ -15,7 +15,7 @@ import pdf from './images/PDF.png';
 import jpg from './images/JPG.png';
 import doc from './images/DOC.png';
 import file from './images/FILE.png';
-import carpeta from './images/FOLDER.png';
+import carpeta from './images/FOLDER2.png';
 import './album.css';
 /* import { useHistory, useLocation, useParams, useRouteMatch } from 'react-router'; */
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
@@ -64,9 +64,9 @@ const SimpleBreadcrumbs = ( { breadcrumb, setBreadcrumb, setFolders, recorrido, 
   return (
     <Breadcrumbs separator="›" aria-label="breadcrumb" align="center">
         {arreglo.map( (directorioRecorrido) => (
-          <Link underline="hover" color="primary" key={directorioRecorrido} onClick={ ( event ) => handleClick( event, [...breadcrumb], setBreadcrumb, setFolders, [...recorrido], setRecorrido ) }>
+          <Button underline="hover" color="primary" key={directorioRecorrido} onClick={ ( event ) => handleClick( event, [...breadcrumb], setBreadcrumb, setFolders, [...recorrido], setRecorrido ) }>
             {directorioRecorrido}
-          </Link>))}
+          </Button>))}
         <Typography color="inherit">{ breadcrumb[breadcrumb.length - 1] }</Typography>
       </Breadcrumbs> 
     )
@@ -112,7 +112,7 @@ export default function Album() {
 
   const classes = useStyles();
   const [recorrido, setRecorrido] = useState([]);
-  const [breadcrumb, setBreadcrumb] = useState(['PasantiaOrlando']);
+  const [breadcrumb, setBreadcrumb] = useState(['COMPAÑÍAS']);
   const url_name = 'http://localhost:4000/api/folders/';
   const [buscar, setBuscar] = useState('https:localhost:5000');
   const [folders,setFolders] = useState();
@@ -191,7 +191,7 @@ export default function Album() {
             { !folders ? ' No se ha podido acceder a los datos del servidor. ' :
             folders.map((card) => (
               <Grid item key={card} xs={12} sm={6} md={4} key={card.name}>
-                <Card className={classes.card}>
+                <Card className="animate__animated animate__fadeIn animate__delay-0.2s">
                   <CardMedia
                     name={card.name}
                     className={classes.cardMedia}
@@ -224,6 +224,7 @@ export default function Album() {
         </Container>
 
       </main>
+
       {/* Footer */}
       <footer className={classes.footer}>
         <Typography variant="h6" align="center" gutterBottom>
@@ -231,12 +232,13 @@ export default function Album() {
         </Typography>
         <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
           <a>Página web propiedad de Vencerámica Venezuela.</a>
-          <li><a>Diseño, Implementación, Gestión, Elaboración y Mantenimiento realizado por: </a></li>
+          <li><a>Diseño, Planificación, Implementación, Gestión y Mantenimiento realizado por: </a></li>
           <li><a>Orlando Chaparro Salazar</a></li>
         </Typography>
         <Copyright />
       </footer>
       {/* End footer */}
     </React.Fragment>
+    
   );
 }
