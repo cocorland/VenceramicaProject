@@ -1,20 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { useMsal } from "@azure/msal-react";
 import Button from '@material-ui/core/Button';
 
 /* Importaciones del buscador */
 
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
 import { alpha, makeStyles } from '@material-ui/core/styles';
-import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 
 /* Fin de las importaciones del buscador */
 
 /* Estilos del buscador */
-
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
@@ -71,19 +67,38 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-/* Fin de los estilos del buscador */
-
-const handleChange = (e) => {
-    console.log( e.target );
-}
-
 /**
- * Renders a sign-out button
+ * Renderiza boton de Buscador y Logout
  */
 export const SignOutButton = () => {
+    
     const { instance } = useMsal();
     const classes = useStyles();
+    
+    const [ searchState, setSearchState ] = useState(
+        {
+            name: ''
+        }
+    );
+    
+    const { name } = searchState;
+    
+    const handleEnter = (e) => {
+        if (e.key === 'Enter') {
+            console.log(e.target.value);
+        }
+    }
 
+    const handleChange = ({ target }) => {
+        
+        setSearchState(
+            {
+                ...searchState,
+                [ target.name ]: target.value
+            }
+        );
+    }
+    
     const handleLogout = (logoutType) => {
         if (logoutType === "popup") {
             instance.logoutPopup({
@@ -103,14 +118,17 @@ export const SignOutButton = () => {
                     <SearchIcon />
                 </div>
                 <InputBase
+                    name="name"
                     placeholder="Buscar..."
                     classes={{
                         root: classes.inputRoot,
                         input: classes.inputInput,
                     }}
                     inputProps={{ 'aria-label': 'search' }}
-                    onChange={ handleChange }
-                />
+                    value={ name }
+                    onKeyPress={ handleEnter }
+                    onChange={ (e) => handleChange(e) }
+                    />
             </div>
             
             <Button className="btn btn-primary" variant="contained" color="secondary" drop="left" onClick={() => handleLogout("redirect")}>

@@ -64,9 +64,9 @@ const SimpleBreadcrumbs = ( { breadcrumb, setBreadcrumb, setFolders, recorrido, 
   return (
     <Breadcrumbs separator="›" aria-label="breadcrumb" align="center">
         {arreglo.map( (directorioRecorrido) => (
-          <Button underline="hover" color="primary" key={directorioRecorrido} onClick={ ( event ) => handleClick( event, [...breadcrumb], setBreadcrumb, setFolders, [...recorrido], setRecorrido ) }>
+          <Link underline="hover" color="primary" key={directorioRecorrido} onClick={ ( event ) => handleClick( event, [...breadcrumb], setBreadcrumb, setFolders, [...recorrido], setRecorrido ) }>
             {directorioRecorrido}
-          </Button>))}
+          </Link>))}
         <Typography color="inherit">{ breadcrumb[breadcrumb.length - 1] }</Typography>
       </Breadcrumbs> 
     )
@@ -112,7 +112,7 @@ export default function Album() {
 
   const classes = useStyles();
   const [recorrido, setRecorrido] = useState([]);
-  const [breadcrumb, setBreadcrumb] = useState(['COMPAÑÍAS']);
+  const [breadcrumb, setBreadcrumb] = useState(['PasantiaOrlando']);
   const url_name = 'http://localhost:4000/api/folders/';
   const [buscar, setBuscar] = useState('https:localhost:5000');
   const [folders,setFolders] = useState();
@@ -191,7 +191,7 @@ export default function Album() {
             { !folders ? ' No se ha podido acceder a los datos del servidor. ' :
             folders.map((card) => (
               <Grid item key={card} xs={12} sm={6} md={4} key={card.name}>
-                <Card className="animate__animated animate__fadeIn animate__delay-0.2s">
+                <Card className="animate__animated animate__fadeIn animate__fast">
                   <CardMedia
                     name={card.name}
                     className={classes.cardMedia}

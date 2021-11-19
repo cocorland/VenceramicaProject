@@ -8,8 +8,8 @@ function Routes() {
     <BrowserRouter>
       <Switch>
         <Route exact path="/" component={App}/>
+        <Route exact path="/ver" component={visualizador}/>
         <Route exact path="/:directory" component={App}/>
-        <Route path="/ver" component={visualizador}/>
       </Switch>
     </BrowserRouter>
   );
