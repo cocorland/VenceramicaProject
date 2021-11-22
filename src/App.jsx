@@ -94,13 +94,14 @@ const ProfileContent = () => {
  * If a user is authenticated the ProfileContent component above is rendered. Otherwise a message indicating a user is not authenticated is rendered.
  */
 
-const MainContent = () => {    
-  
+const MainContent = (props) => {    
+
+    const { buscar } = props;
     return (
         <div className="App">
             <AuthenticatedTemplate>
                 <ProfileContent />
-                <Album />
+                <Album buscar={buscar} />
 
             </AuthenticatedTemplate>
 
@@ -120,9 +121,11 @@ const MainContent = () => {
 };
 
 export default function App() {
+
+    const [buscar, setBuscar] = useState({ name: '' })
     return (
-        <PageLayout>
-            <MainContent />
+        <PageLayout buscar={buscar} setBuscar={setBuscar}>
+            <MainContent buscar={buscar} setBuscar={setBuscar} />
         </PageLayout>
     );
 }

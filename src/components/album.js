@@ -108,8 +108,10 @@ const useStyles = makeStyles((theme) => ({
 /** Cantidad de tarjetas que voy a mostrar */
 // const cards = ;
 
-export default function Album() {
+export default function Album(props) {
 
+  const {buscar: buscador} = props;
+  console.log("Lo que voy a buscar es: ", buscador);
   const classes = useStyles();
   const [recorrido, setRecorrido] = useState([]);
   const [breadcrumb, setBreadcrumb] = useState(['PasantiaOrlando']);
@@ -138,18 +140,12 @@ export default function Album() {
 
   useEffect(() => {
     setRecorrido([...recorrido, folders]);
-
-  }, [folders]);
-
-  useEffect(() => {
-    
     let caminito = breadcrumb.map( (ruta) => encodeURI(ruta) );
     caminito.shift();
     let ruta2 = 'http://localhost:5000/' + caminito.join('/');
     setBuscar(ruta2);
 
   }, [folders]);
-
 
   const displayImage = (param) => {
     switch(param) {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { useMsal } from "@azure/msal-react";
 import Button from '@material-ui/core/Button';
 
@@ -70,18 +70,13 @@ const useStyles = makeStyles((theme) => ({
 /**
  * Renderiza boton de Buscador y Logout
  */
-export const SignOutButton = () => {
-    
+export const SignOutButton = (props) => {
+
     const { instance } = useMsal();
     const classes = useStyles();
-    
-    const [ searchState, setSearchState ] = useState(
-        {
-            name: ''
-        }
-    );
-    
-    const { name } = searchState;
+    const {buscar, setBuscar} = props;
+
+    const {name} = buscar;
     
     const handleEnter = (e) => {
         if (e.key === 'Enter') {
@@ -91,9 +86,9 @@ export const SignOutButton = () => {
 
     const handleChange = ({ target }) => {
         
-        setSearchState(
+        setBuscar(
             {
-                ...searchState,
+                ...buscar,
                 [ target.name ]: target.value
             }
         );
