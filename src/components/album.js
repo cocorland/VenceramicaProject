@@ -111,7 +111,6 @@ const useStyles = makeStyles((theme) => ({
 export default function Album(props) {
 
   const {buscar: buscador} = props;
-  console.log("Lo que voy a buscar es: ", buscador);
   const classes = useStyles();
   const [recorrido, setRecorrido] = useState([]);
   const [breadcrumb, setBreadcrumb] = useState(['PasantiaOrlando']);
@@ -146,6 +145,19 @@ export default function Album(props) {
     setBuscar(ruta2);
 
   }, [folders]);
+
+  useEffect(() => {
+    /* Efecto que dispara el buscador despues de que folders se cargue por primera vez*/
+    if (folders) {
+      if (buscador.name.length > 0) {
+        let resultadoBusqueda = folders.filter(elem => elem.name.includes(buscador.name));
+        setFolders(resultadoBusqueda);
+        console.log(folders);
+      } else {
+        setFolders(folders);
+      }
+    }
+  }, [buscador])
 
   const displayImage = (param) => {
     switch(param) {

@@ -123,6 +123,7 @@ export const SignOutButton = (props) => {
                     value={ name }
                     onKeyPress={ handleEnter }
                     onChange={ (e) => handleChange(e) }
+                    autoComplete="off"
                     />
             </div>
             
