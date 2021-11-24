@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
    * @param props 
    */
 
-  export const PageLayout = (props) => {
+  export const PageLayout = ( {buscar, setBuscar, children} ) => {
 
       const isAuthenticated = useIsAuthenticated();
       const classes = useStyles();
@@ -48,13 +48,13 @@ const useStyles = makeStyles((theme) => ({
                     <Typography variant="h6" className={classes.title}>
                     Plataforma de Autenticación de Microsoft
                     </Typography>
-                    { isAuthenticated ? <SignOutButton buscar={ props.buscar } setBuscar={props.setBuscar} /> : <SignInButton /> }
+                    { isAuthenticated ? <SignOutButton buscar={ buscar } setBuscar={ setBuscar } /> : <SignInButton /> }
                 </Toolbar>
                 </AppBar>
             </div>
 
             <br></br>
-            {props.children}
+            { children }
         </>
     );
 };

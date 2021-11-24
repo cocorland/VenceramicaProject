@@ -149,13 +149,17 @@ export default function Album(props) {
   useEffect(() => {
     /* Efecto que dispara el buscador despues de que folders se cargue por primera vez*/
     if (folders) {
-      if (buscador.name.length > 0) {
+      if (buscador.name.length > 5) {
         let resultadoBusqueda = folders.filter(elem => elem.name.includes(buscador.name));
         setFolders(resultadoBusqueda);
         console.log(folders);
       } else {
         setFolders(folders);
       }
+    }
+    if (buscador.enter) {
+      let resultadoBusqueda = folders.filter(elem => elem.name.includes(buscador.name));
+      setFolders(resultadoBusqueda);
     }
   }, [buscador])
 

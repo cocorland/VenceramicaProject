@@ -70,17 +70,23 @@ const useStyles = makeStyles((theme) => ({
 /**
  * Renderiza boton de Buscador y Logout
  */
-export const SignOutButton = (props) => {
+export const SignOutButton = ( {buscar, setBuscar} ) => {
 
     const { instance } = useMsal();
     const classes = useStyles();
-    const {buscar, setBuscar} = props;
 
-    const {name} = buscar;
+    const { name, enter } = buscar;
     
-    const handleEnter = (e) => {
-        if (e.key === 'Enter') {
-            console.log(e.target.value);
+    const handleEnter = ({ target, key }) => {
+        if (key === 'Enter') {
+            console.log(target.value);
+            setBuscar(
+                {
+                    ...buscar,
+                    [ target.name ]: target.value,
+                    enter : true
+                }
+            );
         }
     }
 
@@ -89,7 +95,8 @@ export const SignOutButton = (props) => {
         setBuscar(
             {
                 ...buscar,
-                [ target.name ]: target.value
+                [ target.name ]: target.value,
+                enter : false
             }
         );
     }
