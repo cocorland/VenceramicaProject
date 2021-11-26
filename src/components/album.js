@@ -17,8 +17,7 @@ import doc from './images/DOC.png';
 import file from './images/FILE.png';
 import carpeta from './images/FOLDER2.png';
 import './album.css';
-/* import { useHistory, useLocation, useParams, useRouteMatch } from 'react-router'; */
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+
 
 function Copyright() {
   /* Complemento del Footer.
@@ -26,20 +25,21 @@ function Copyright() {
 
   return (
     <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Mi sitio web de proyectos realizados:
-      </Link>{'https://github.com/cocorland'}
-      {new Date().getFullYear()}
-      {'.'}
+      {'Copyright © Mi sitio web de proyectos realizados: '}
+      <Link color="inherit" href="https://github.com/cocorland">
+        {'https://github.com/cocorland'}
+      </Link>
+        {' '}
+        {new Date().getFullYear()}
+        {'.'}
     </Typography>
   );
 }
 
-function handleClick(event, breadcrumb, setBreadcrumb, setFolders, recorrido, setRecorrido ) {
+function handleClick(event, breadcrumb, setBreadcrumb, setFolders, recorrido, setRecorrido) {
   /* Manejador de eventos.
-  Controla las acciones que se realizan al hacer click en cualquiera de los niveles del breadcrumb */ 
-    
+  Controla las acciones que se realizan al hacer click en cualquiera de los niveles del breadcrumb */
+
   let historial = [...recorrido];
   const breadcrumbClickeado = (element) => element === event.target.innerText;
   const longitud = breadcrumb.findIndex(breadcrumbClickeado) + 1
@@ -47,14 +47,14 @@ function handleClick(event, breadcrumb, setBreadcrumb, setFolders, recorrido, se
   historial.length = longitud;
   setRecorrido([...historial]);
 
-  setFolders (
+  setFolders(
     recorrido[longitud]
   );
-  
-  setBreadcrumb( breadcrumb );
+
+  setBreadcrumb(breadcrumb);
 }
 
-const SimpleBreadcrumbs = ( { breadcrumb, setBreadcrumb, setFolders, recorrido, setRecorrido } ) => {
+const SimpleBreadcrumbs = ({ breadcrumb, setBreadcrumb, setFolders, recorrido, setRecorrido }) => {
   /* Componente encargado de la renderizacion del breadcrumb.
   Todos los elementos anteriores al ultimo deben ser clickeables. El ultimo elemento indica en que nivel del directorio estoy. */
 
@@ -63,13 +63,13 @@ const SimpleBreadcrumbs = ( { breadcrumb, setBreadcrumb, setFolders, recorrido, 
 
   return (
     <Breadcrumbs separator="›" aria-label="breadcrumb" align="center">
-        {arreglo.map( (directorioRecorrido) => (
-          <Link underline="hover" color="primary" key={directorioRecorrido} onClick={ ( event ) => handleClick( event, [...breadcrumb], setBreadcrumb, setFolders, [...recorrido], setRecorrido ) }>
-            {directorioRecorrido}
-          </Link>))}
-        <Typography color="inherit">{ breadcrumb[breadcrumb.length - 1] }</Typography>
-      </Breadcrumbs> 
-    )
+      {arreglo.map((directorioRecorrido) => (
+        <Link underline="hover" color="primary" key={directorioRecorrido} onClick={(event) => handleClick(event, [...breadcrumb], setBreadcrumb, setFolders, [...recorrido], setRecorrido)}>
+          {directorioRecorrido}
+        </Link>))}
+      <Typography color="inherit">{breadcrumb[breadcrumb.length - 1]}</Typography>
+    </Breadcrumbs>
+  )
 };
 
 
@@ -108,20 +108,61 @@ const useStyles = makeStyles((theme) => ({
 /** Cantidad de tarjetas que voy a mostrar */
 // const cards = ;
 
+function findNode(name, currentNode) {
+  var i,
+      currentChild,
+      result;
+
+  //Fragmento utilizado para determinar si existe un subconjunto de lo que ingrese en la base de datos real
+  if ( currentNode.name.includes(name) ) {
+    console.log("Encontré una coincidencia en el elemento: ", currentNode)
+  }
+
+  if (name == currentNode.name) {
+      return currentNode;
+  } else {
+
+      if (currentNode.children) {
+
+        for (i = 0; i < currentNode.children.length; i += 1) {
+            currentChild = currentNode.children[i];
+
+            // Busqueda en el hijo actual:
+            result = findNode(name, currentChild);
+
+            // Devuelve el resultado si se encontró el hijo
+            if (result !== false) {
+                return result;
+            }
+        }
+      }
+      // Si el elemento no se encontró y no existen más opciones.
+      return false;
+  }
+}
+
+
+function recorrerCarpetasParaBuscar(name, current) {
+  let j, currentNode;
+
+  let resultadoBusqueda = current.filter(elem => elem.name.includes(name));
+  for (j = 0; j < current.length; j += 1) {
+    currentNode = current[j]
+    const loQueConseguimos = findNode( name, currentNode )
+    console.log(loQueConseguimos);
+  }
+}
+
 export default function Album(props) {
 
-  const {buscar: buscador} = props;
+  const { buscar: buscador } = props;
   const classes = useStyles();
   const [recorrido, setRecorrido] = useState([]);
   const [breadcrumb, setBreadcrumb] = useState(['PasantiaOrlando']);
   const url_name = 'http://localhost:4000/api/folders/';
   const [buscar, setBuscar] = useState('https:localhost:5000');
-  const [folders,setFolders] = useState();
-  /* const location = useLocation(); */
-  /* let history = useHistory(); */
-  /* let match = useRouteMatch(); */
-  /* let {path, url, params} = useRouteMatch(); */
-  
+  const [folders, setFolders] = useState();
+
   const fetchApi = async () => {
     try {
       const response = await fetch(url_name)
@@ -132,14 +173,14 @@ export default function Album(props) {
       console.log(error)
     }
   }
-  
+
   useEffect(() => {
     fetchApi();
   }, [])
 
   useEffect(() => {
     setRecorrido([...recorrido, folders]);
-    let caminito = breadcrumb.map( (ruta) => encodeURI(ruta) );
+    let caminito = breadcrumb.map((ruta) => encodeURI(ruta));
     caminito.shift();
     let ruta2 = 'http://localhost:5000/' + caminito.join('/');
     setBuscar(ruta2);
@@ -149,7 +190,7 @@ export default function Album(props) {
   useEffect(() => {
     /* Efecto que dispara el buscador despues de que folders se cargue por primera vez*/
     if (folders) {
-      if (buscador.name.length > 5) {
+      if (buscador.name.length > 15) {
         let resultadoBusqueda = folders.filter(elem => elem.name.includes(buscador.name));
         setFolders(resultadoBusqueda);
         console.log(folders);
@@ -158,13 +199,15 @@ export default function Album(props) {
       }
     }
     if (buscador.enter) {
-      let resultadoBusqueda = folders.filter(elem => elem.name.includes(buscador.name));
-      setFolders(resultadoBusqueda);
+      recorrerCarpetasParaBuscar(buscador.name, folders);
+
+      /* let resultadoBusqueda = folders.filter(elem => elem.name.includes(buscador.name));
+      setFolders(resultadoBusqueda); */
     }
   }, [buscador])
 
   const displayImage = (param) => {
-    switch(param) {
+    switch (param) {
       case param = '.pdf':
         return pdf;
       case param = '.jpg':
@@ -181,12 +224,12 @@ export default function Album(props) {
     /* event.preventDefault(); */
     setFolders([...cards]);
     setBreadcrumb([...breadcrumb, nombre]);
-    
+
     /* { !params.directory ? history.push(`${nombre}`) : history.push(`${params.directory}/${nombre}/`) } */
     /* console.log("Mi url: ", url ); */
 
-/*     history.push(`${url}/${nombre}`)
-    { !} */
+    /*     history.push(`${url}/${nombre}`)
+        { !} */
   };
 
   return (
@@ -194,44 +237,44 @@ export default function Album(props) {
       <CssBaseline />
       <main>
         <Container className={classes.cardGrid} maxWidth="md">
-          <SimpleBreadcrumbs breadcrumb={ [...breadcrumb] } setBreadcrumb={ setBreadcrumb } setFolders={setFolders} recorrido={recorrido} setRecorrido={setRecorrido} /> 
+          <SimpleBreadcrumbs breadcrumb={[...breadcrumb]} setBreadcrumb={setBreadcrumb} setFolders={setFolders} recorrido={recorrido} setRecorrido={setRecorrido} />
         </Container>
         {/* Hero unit */}
         <Container className={classes.cardGrid} maxWidth="md">
           {/* End hero unit */}
           <Grid container spacing={4}>
-            { !folders ? ' No se ha podido acceder a los datos del servidor. ' :
-            folders.map((card) => (
-              <Grid item key={card} xs={12} sm={6} md={4} key={card.name}>
-                <Card className="animate__animated animate__fadeIn animate__fast">
-                  <CardMedia
-                    name={card.name}
-                    className={classes.cardMedia}
-                    image={ card.type == "directory" ? carpeta : displayImage(card.extension) }
-                  />
-                  <CardContent className={classes.cardContent}>
+            {!folders ? ' No se ha podido acceder a los datos del servidor. ' :
+              folders.map((card) => (
+                <Grid item key={card} xs={12} sm={6} md={4} key={card.name}>
+                  <Card className="animate__animated animate__fadeIn animate__fast">
+                    <CardMedia
+                      name={card.name}
+                      className={classes.cardMedia}
+                      image={card.type == "directory" ? carpeta : displayImage(card.extension)}
+                    />
+                    <CardContent className={classes.cardContent}>
 
-                    <Typography variant="subtitle1" gutterBottom component="div">
-                      {card.name}
-                    </Typography>
-                    <hr />
+                      <Typography variant="subtitle1" gutterBottom component="div">
+                        {card.name}
+                      </Typography>
+                      <hr />
 
-                  </CardContent>
-                  <CardActions>
-                    {card.type == "directory" ? 
-                      <>
-                        <Button size="small" onClick={(event) => handleOpen(event, [...card.children], card.name)}>
-                          Abrir Directorio
+                    </CardContent>
+                    <CardActions>
+                      {card.type == "directory" ?
+                        <>
+                          <Button size="small" onClick={(event) => handleOpen(event, [...card.children], card.name)}>
+                            Abrir Directorio
+                          </Button>
+                        </> :
+                        <Button href={`${buscar}/${card.name}`} size="small" target="_blank">
+                          Ver
                         </Button>
-                      </> : 
-                      <Button href={`${buscar}/${card.name}`} size="small" target="_blank">
-                        Ver
-                      </Button>
-                    }
-                  </CardActions>
-                </Card>
-              </Grid>
-            ))}
+                      }
+                    </CardActions>
+                  </Card>
+                </Grid>
+              ))}
           </Grid>
         </Container>
 
@@ -244,13 +287,13 @@ export default function Album(props) {
         </Typography>
         <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
           <a>Página web propiedad de Vencerámica Venezuela.</a>
-          <li><a>Diseño, Planificación, Implementación, Gestión y Mantenimiento realizado por: </a></li>
+          <li><a>Diseño, Implementación, Gestión y Mantenimiento realizado por: </a></li>
           <li><a>Orlando Chaparro Salazar</a></li>
         </Typography>
         <Copyright />
       </footer>
       {/* End footer */}
     </React.Fragment>
-    
+
   );
 }
