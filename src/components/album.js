@@ -29,9 +29,9 @@ function Copyright() {
       <Link color="inherit" href="https://github.com/cocorland">
         {'https://github.com/cocorland'}
       </Link>
-        {' '}
-        {new Date().getFullYear()}
-        {'.'}
+      {' '}
+      {new Date().getFullYear()}
+      {'.'}
     </Typography>
   );
 }
@@ -109,35 +109,35 @@ const useStyles = makeStyles((theme) => ({
 // const cards = ;
 
 function findNode(name, currentNode) {
-  var i,
-      currentChild,
-      result;
+  let i,
+    currentChild,
+    result;
 
   //Fragmento utilizado para determinar si existe un subconjunto de lo que ingrese en la base de datos real
-  if ( currentNode.name.includes(name) ) {
+  if (currentNode.name.includes(name)) {
     console.log("Encontré una coincidencia en el elemento: ", currentNode)
   }
 
   if (name == currentNode.name) {
-      return currentNode;
+    return currentNode;
   } else {
 
-      if (currentNode.children) {
+    if (currentNode.children) {
 
-        for (i = 0; i < currentNode.children.length; i += 1) {
-            currentChild = currentNode.children[i];
+      for (i = 0; i < currentNode.children.length; i += 1) {
+        currentChild = currentNode.children[i];
 
-            // Busqueda en el hijo actual:
-            result = findNode(name, currentChild);
+        // Busqueda en el hijo actual:
+        result = findNode(name, currentChild);
 
-            // Devuelve el resultado si se encontró el hijo
-            if (result !== false) {
-                return result;
-            }
+        // Devuelve el resultado si se encontró el hijo
+        if (result !== false) {
+          return result;
         }
       }
-      // Si el elemento no se encontró y no existen más opciones.
-      return false;
+    }
+    // Si el elemento no se encontró y no existen más opciones.
+    return false;
   }
 }
 
@@ -145,12 +145,11 @@ function findNode(name, currentNode) {
 function recorrerCarpetasParaBuscar(name, current) {
   let j, currentNode;
 
-  let resultadoBusqueda = current.filter(elem => elem.name.includes(name));
   for (j = 0; j < current.length; j += 1) {
     currentNode = current[j]
-    const loQueConseguimos = findNode( name, currentNode )
-    console.log(loQueConseguimos);
+    findNode(name, currentNode);
   }
+
 }
 
 export default function Album(props) {
@@ -190,7 +189,7 @@ export default function Album(props) {
   useEffect(() => {
     /* Efecto que dispara el buscador despues de que folders se cargue por primera vez*/
     if (folders) {
-      if (buscador.name.length > 15) {
+      if (buscador.name.length > 115) {
         let resultadoBusqueda = folders.filter(elem => elem.name.includes(buscador.name));
         setFolders(resultadoBusqueda);
         console.log(folders);
@@ -199,7 +198,7 @@ export default function Album(props) {
       }
     }
     if (buscador.enter) {
-      recorrerCarpetasParaBuscar(buscador.name, folders);
+      recorrerCarpetasParaBuscar(buscador.name, folders, setFolders);
 
       /* let resultadoBusqueda = folders.filter(elem => elem.name.includes(buscador.name));
       setFolders(resultadoBusqueda); */
@@ -220,10 +219,12 @@ export default function Album(props) {
   }
 
 
-  function handleOpen(event, cards, nombre) {
+  function handleOpen(event, cards, path) {
     /* event.preventDefault(); */
     setFolders([...cards]);
-    setBreadcrumb([...breadcrumb, nombre]);
+    /* setBreadcrumb([...breadcrumb, nombre]); */
+    let setearElBreadcrumb = path.split(/\\/).splice(4);
+    setBreadcrumb([...setearElBreadcrumb]);
 
     /* { !params.directory ? history.push(`${nombre}`) : history.push(`${params.directory}/${nombre}/`) } */
     /* console.log("Mi url: ", url ); */
@@ -263,7 +264,7 @@ export default function Album(props) {
                     <CardActions>
                       {card.type == "directory" ?
                         <>
-                          <Button size="small" onClick={(event) => handleOpen(event, [...card.children], card.name)}>
+                          <Button size="small" onClick={(event) => handleOpen(event, [...card.children], card.path)}>
                             Abrir Directorio
                           </Button>
                         </> :

@@ -79,7 +79,7 @@ export const SignOutButton = ( {buscar, setBuscar} ) => {
     
     const handleEnter = ({ target, key }) => {
         if (key === 'Enter') {
-            console.log(target.value);
+            console.log("Se intentan buscar las coincidencias de: ", target.value);
             setBuscar(
                 {
                     ...buscar,
