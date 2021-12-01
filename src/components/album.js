@@ -108,49 +108,34 @@ const useStyles = makeStyles((theme) => ({
 /** Cantidad de tarjetas que voy a mostrar */
 // const cards = ;
 
-function findNode(name, currentNode) {
+function findNode(name, folders, finalArray) {
+  // Devuelve en el arreglo <finalArray> a todos los objetos que coincidan con el elemento <name> a buscar.
   let i,
+    j,
     currentChild,
     result;
+    
+  for (i = 0; i < folders.length; i += 1) {
+    if (folders[i].name.includes(name)) {
+      finalArray.push( folders[i] )
 
-  //Fragmento utilizado para determinar si existe un subconjunto de lo que ingrese en la base de datos real
-  if (currentNode.name.includes(name)) {
-    console.log("Encontré una coincidencia en el elemento: ", currentNode)
-  }
+      if (folders[i].children) {
+        currentChild = folders[i].children
+        
+        result = findNode(name, currentChild, finalArray)
+      }
 
-  if (name == currentNode.name) {
-    return currentNode;
-  } else {
-
-    if (currentNode.children) {
-
-      for (i = 0; i < currentNode.children.length; i += 1) {
-        currentChild = currentNode.children[i];
-
-        // Busqueda en el hijo actual:
-        result = findNode(name, currentChild);
-
-        // Devuelve el resultado si se encontró el hijo
-        if (result !== false) {
-          return result;
-        }
+    } else {
+      if (folders[i].children) {
+        currentChild = folders[i].children
+        
+        result = findNode(name, currentChild, finalArray)
       }
     }
-    // Si el elemento no se encontró y no existen más opciones.
-    return false;
   }
+  return finalArray
 }
 
-
-function recorrerCarpetasParaBuscar(name, current) {
-  let j, currentNode;
-
-  for (j = 0; j < current.length; j += 1) {
-    currentNode = current[j]
-    findNode(name, currentNode);
-  }
-
-}
 
 export default function Album(props) {
 
@@ -189,19 +174,19 @@ export default function Album(props) {
   useEffect(() => {
     /* Efecto que dispara el buscador despues de que folders se cargue por primera vez*/
     if (folders) {
-      if (buscador.name.length > 115) {
-        let resultadoBusqueda = folders.filter(elem => elem.name.includes(buscador.name));
-        setFolders(resultadoBusqueda);
-        console.log(folders);
-      } else {
-        setFolders(folders);
+      if (buscador.name.length > 7) {
+        let finalArray = [];
+        let arregloDeCoincidencias = findNode(buscador.name, folders, finalArray);
+        setFolders( arregloDeCoincidencias )
+  
       }
     }
+    
     if (buscador.enter) {
-      recorrerCarpetasParaBuscar(buscador.name, folders, setFolders);
+      let finalArray = [];
+      let arregloDeCoincidencias = findNode(buscador.name, folders, finalArray);
+      setFolders( arregloDeCoincidencias )
 
-      /* let resultadoBusqueda = folders.filter(elem => elem.name.includes(buscador.name));
-      setFolders(resultadoBusqueda); */
     }
   }, [buscador])
 
@@ -246,7 +231,7 @@ export default function Album(props) {
           <Grid container spacing={4}>
             {!folders ? ' No se ha podido acceder a los datos del servidor. ' :
               folders.map((card) => (
-                <Grid item key={card} xs={12} sm={6} md={4} key={card.name}>
+                <Grid item key={card} xs={12} sm={6} md={4} key={`${card.name}${card.path}`}>
                   <Card className="animate__animated animate__fadeIn animate__fast">
                     <CardMedia
                       name={card.name}
