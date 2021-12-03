@@ -51,6 +51,8 @@ function handleClick(event, breadcrumb, setBreadcrumb, setFolders, recorrido, se
     recorrido[longitud]
   );
 
+
+  console.log(breadcrumb);
   setBreadcrumb(breadcrumb);
 }
 
@@ -112,21 +114,21 @@ function findNode(name, folders, finalArray) {
   let i,
     currentChild,
     result;
-    
+
   for (i = 0; i < folders.length; i += 1) {
     if (folders[i].name.includes(name)) {
-      finalArray.push( folders[i] )
+      finalArray.push(folders[i])
 
       if (folders[i].children) {
         currentChild = folders[i].children
-        
+
         result = findNode(name, currentChild, finalArray)
       }
 
     } else {
       if (folders[i].children) {
         currentChild = folders[i].children
-        
+
         result = findNode(name, currentChild, finalArray)
       }
     }
@@ -174,15 +176,15 @@ export default function Album(props) {
       if (buscador.name.length > 7) {
         let finalArray = [];
         let arregloDeCoincidencias = findNode(buscador.name, folders, finalArray);
-        setFolders( arregloDeCoincidencias )
-  
+        setFolders(arregloDeCoincidencias)
+
       }
     }
-    
+
     if (buscador.enter) {
       let finalArray = [];
       let arregloDeCoincidencias = findNode(buscador.name, folders, finalArray);
-      setFolders( arregloDeCoincidencias )
+      setFolders(arregloDeCoincidencias)
 
     }
   }, [buscador])
@@ -219,7 +221,18 @@ export default function Album(props) {
     let setearLaVista = path.split(/\\/).splice(5);
 
 
-    setBuscar( `http://localhost:5000/${setearLaVista.join('/')}` );
+    setBuscar(`http://localhost:5000/${setearLaVista.join('/')}`);
+  }
+
+  const MostrarRuta = ( {show, ruta}) => {
+    console.log(show);
+    
+      return (
+        <Typography>
+          {ruta}
+        </Typography>
+      )
+    
   }
 
   return (
@@ -247,9 +260,12 @@ export default function Album(props) {
                       <Typography variant="subtitle1" gutterBottom component="div">
                         {card.name}
                       </Typography>
+
+                      <MostrarRuta show={buscador.enter} ruta={card.path} />
                       <hr />
 
                     </CardContent>
+
                     <CardActions>
                       {card.type == "directory" ?
                         <>
