@@ -72,7 +72,6 @@ const SimpleBreadcrumbs = ({ breadcrumb, setBreadcrumb, setFolders, recorrido, s
   )
 };
 
-
 const useStyles = makeStyles((theme) => ({
   icon: {
     marginRight: theme.spacing(2),
@@ -111,7 +110,6 @@ const useStyles = makeStyles((theme) => ({
 function findNode(name, folders, finalArray) {
   // Devuelve en el arreglo <finalArray> a todos los objetos que coincidan con el elemento <name> a buscar.
   let i,
-    j,
     currentChild,
     result;
     
@@ -135,7 +133,6 @@ function findNode(name, folders, finalArray) {
   }
   return finalArray
 }
-
 
 export default function Album(props) {
 
@@ -203,7 +200,6 @@ export default function Album(props) {
     }
   }
 
-
   function handleOpen(event, cards, path) {
     /* event.preventDefault(); */
     setFolders([...cards]);
@@ -218,6 +214,14 @@ export default function Album(props) {
         { !} */
   };
 
+  function handleView(event, path) {
+    /* Funcion para obtener la ruta en la cual visualizar la imagen. Permite visualizar imagenes encontradas mediante el buscador. */
+    let setearLaVista = path.split(/\\/).splice(5);
+
+
+    setBuscar( `http://localhost:5000/${setearLaVista.join('/')}` );
+  }
+
   return (
     <React.Fragment>
       <CssBaseline />
@@ -229,7 +233,7 @@ export default function Album(props) {
         <Container className={classes.cardGrid} maxWidth="md">
           {/* End hero unit */}
           <Grid container spacing={4}>
-            {!folders ? ' No se ha podido acceder a los datos del servidor. ' :
+            {!folders ? <div className="alert alert-danger"> No se pudo acceder a la base de datos del servidor </div> :
               folders.map((card) => (
                 <Grid item key={card} xs={12} sm={6} md={4} key={`${card.name}${card.path}`}>
                   <Card className="animate__animated animate__fadeIn animate__fast">
@@ -253,7 +257,7 @@ export default function Album(props) {
                             Abrir Directorio
                           </Button>
                         </> :
-                        <Button href={`${buscar}/${card.name}`} size="small" target="_blank">
+                        <Button onClick={(event) => handleView(event, card.path)} href={`${buscar}`} size="small" target="_blank">
                           Ver
                         </Button>
                       }
