@@ -224,15 +224,15 @@ export default function Album(props) {
     setBuscar(`http://localhost:5000/${setearLaVista.join('/')}`);
   }
 
-  const MostrarRuta = ( {show, ruta}) => {
-    console.log(show);
-    
+  const MostrarRuta = ( {ruta} ) => {
+
+    let setearLaVista = ruta.split(/\\/).splice(4).join('/');
+
       return (
-        <Typography>
-          {ruta}
-        </Typography>
+        <p className="breakAll">
+          {setearLaVista}
+        </p>
       )
-    
   }
 
   return (
@@ -257,11 +257,17 @@ export default function Album(props) {
                     />
                     <CardContent className={classes.cardContent}>
 
-                      <Typography variant="subtitle1" gutterBottom component="div">
+                      <Typography gutterBottom variant="h6" component="h2">
                         {card.name}
                       </Typography>
 
-                      <MostrarRuta show={buscador.enter} ruta={card.path} />
+                      <MostrarRuta ruta={card.path}/> 
+
+                      {/* <Typography variant="subtitle1" gutterBottom component="div">
+                        {card.name}
+                      </Typography> */}
+
+                      {/* <MostrarRuta show={buscador.enter} ruta={card.path} /> */}
                       <hr />
 
                     </CardContent>

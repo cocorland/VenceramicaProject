@@ -1,3 +1,11 @@
 .grid:hover {
     box-shadow: 5px 10px 20px 1px red !important;
 }
+
+.breakAll {
+    word-break: break-all;
+  }
+
+.breakWord {
+  word-break: break-word;
+}
