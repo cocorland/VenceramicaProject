@@ -36,7 +36,31 @@ function Copyright() {
   );
 }
 
-function handleClick(event, breadcrumb, setBreadcrumb, setFolders, recorrido, setRecorrido) {
+const buscarBreadcrumb = (breadcrumb, foldersOriginal, result) => {
+
+  let buscaRuta = `\\Users\\adminvencer\\Documents\\${breadcrumb.join('\\')}`;
+
+  let i,
+  currentChild;  
+
+  for (i = 0; i < foldersOriginal.length; i += 1) {
+    if (foldersOriginal[i].path == buscaRuta) {
+      console.log("Este es el resultado en la funcion: ", foldersOriginal[i].children)
+      result.push(foldersOriginal[i].children)
+
+    } else {
+      if (foldersOriginal[i].children) {
+        currentChild = foldersOriginal[i].children
+
+        buscarBreadcrumb(breadcrumb, currentChild, result)
+      }
+    }
+  }
+
+  console.log("Lo que la funcion va a retornar: ", result)
+}
+
+function handleClick(event, breadcrumb, setBreadcrumb, folders, setFolders, recorrido, setRecorrido, foldersOriginal) {
   /* Manejador de eventos.
   Controla las acciones que se realizan al hacer click en cualquiera de los niveles del breadcrumb */
 
@@ -46,17 +70,19 @@ function handleClick(event, breadcrumb, setBreadcrumb, setFolders, recorrido, se
   breadcrumb.length = longitud;
   historial.length = longitud;
   setRecorrido([...historial]);
+  
+  let result = [];
+  buscarBreadcrumb(breadcrumb, foldersOriginal, result);
+  console.log("Result al terminar la funcion buscar: ", result[0]);
+  
+  if (result[0]) {setFolders(result[0])}
+  else {setFolders(foldersOriginal)}
+  // setFolders(recorrido[longitud])
 
-  setFolders(
-    recorrido[longitud]
-  );
-
-
-  console.log(breadcrumb);
   setBreadcrumb(breadcrumb);
 }
 
-const SimpleBreadcrumbs = ({ breadcrumb, setBreadcrumb, setFolders, recorrido, setRecorrido }) => {
+const SimpleBreadcrumbs = ({ breadcrumb, setBreadcrumb, folders, setFolders, recorrido, setRecorrido, foldersOriginal }) => {
   /* Componente encargado de la renderizacion del breadcrumb.
   Todos los elementos anteriores al ultimo deben ser clickeables. El ultimo elemento indica en que nivel del directorio estoy. */
 
@@ -66,7 +92,7 @@ const SimpleBreadcrumbs = ({ breadcrumb, setBreadcrumb, setFolders, recorrido, s
   return (
     <Breadcrumbs separator="›" aria-label="breadcrumb" align="center">
       {arreglo.map((directorioRecorrido) => (
-        <Link underline="hover" color="primary" key={directorioRecorrido} onClick={(event) => handleClick(event, [...breadcrumb], setBreadcrumb, setFolders, [...recorrido], setRecorrido)}>
+        <Link underline="hover" color="primary" key={directorioRecorrido} onClick={(event) => handleClick(event, [...breadcrumb], setBreadcrumb, folders, setFolders, [...recorrido], setRecorrido, foldersOriginal)}>
           {directorioRecorrido}
         </Link>))}
       <Typography color="inherit">{breadcrumb[breadcrumb.length - 1]}</Typography>
@@ -144,7 +170,10 @@ export default function Album(props) {
   const [breadcrumb, setBreadcrumb] = useState(['PasantiaOrlando']);
   const url_name = 'http://localhost:4000/api/folders/';
   const [buscar, setBuscar] = useState('https:localhost:5000');
+  // Estado en el que se almacenara todo el arbol de directorios importado del json
   const [folders, setFolders] = useState();
+  // Estado para almacenar el arbol y que siempre se mantenga.
+  const [foldersOriginal, setFoldersOriginal] = useState();
 
   const fetchApi = async () => {
     try {
@@ -152,6 +181,7 @@ export default function Album(props) {
       console.log(response.status)
       const responseJSON = await response.json()
       setFolders(responseJSON)
+      setFoldersOriginal(responseJSON)
     } catch (error) {
       console.log(error)
     }
@@ -240,7 +270,7 @@ export default function Album(props) {
       <CssBaseline />
       <main>
         <Container className={classes.cardGrid} maxWidth="md">
-          <SimpleBreadcrumbs breadcrumb={[...breadcrumb]} setBreadcrumb={setBreadcrumb} setFolders={setFolders} recorrido={recorrido} setRecorrido={setRecorrido} />
+          <SimpleBreadcrumbs breadcrumb={[...breadcrumb]} setBreadcrumb={setBreadcrumb} folders={folders} setFolders={setFolders} recorrido={recorrido} setRecorrido={setRecorrido} foldersOriginal={foldersOriginal}/>
         </Container>
         {/* Hero unit */}
         <Container className={classes.cardGrid} maxWidth="md">
