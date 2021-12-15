@@ -172,8 +172,8 @@ export default function Album(props) {
   const classes = useStyles();
   // Cadena de texto para hacer request a la API 1.
   const url_name = 'http://localhost:4000/api/folders/';
-  // Desestructuracion de la variable que proviene del buscador.
-  const { buscar: buscador } = props;
+  // Desestructuracion de las variables y estados que provienen del buscador.
+  const { buscar: buscador, setBuscar: setEnter } = props;
   // Estado que mantiene el recorrido de directorios desde el cual provengo en caso de navegacion.
   const [recorrido, setRecorrido] = useState([]);
   // Estado que mantiene el breadcrumb.
@@ -241,7 +241,7 @@ export default function Album(props) {
       // Intenta determinar si el elemento a buscar coincide con una palabra o numero valido mediante una expresion regular.
       let hallado = b.match(/\w/);
       if (b.length == 0) {
-        console.log('COLABORA HIJO');
+        console.log('Busqueda vacia, muestra la carpeta actual.');
         setFolders(actual);
       }
       if (hallado) {
@@ -275,11 +275,11 @@ export default function Album(props) {
     /* event.preventDefault(); */
     setFolders([...cards]);
     setActual([...cards]);
-    console.log("Esto es actual: ", actual);
     /* setBreadcrumb([...breadcrumb, nombre]); */
     let setearElBreadcrumb = path.split(/\\/).splice(4);
     setBreadcrumb([...setearElBreadcrumb]);
     setConsegui(true);
+    setEnter({ name: '', enter: false })
   };
 
   function handleView(event, path) {
@@ -305,7 +305,16 @@ export default function Album(props) {
       <CssBaseline />
       <main>
         <Container className={classes.cardGrid} maxWidth="md">
-          <SimpleBreadcrumbs breadcrumb={[...breadcrumb]} setBreadcrumb={setBreadcrumb} folders={folders} setFolders={setFolders} recorrido={recorrido} setRecorrido={setRecorrido} foldersOriginal={foldersOriginal} actual={actual} setActual={setActual} />
+          <SimpleBreadcrumbs 
+            breadcrumb={[...breadcrumb]} 
+            setBreadcrumb={setBreadcrumb} 
+            folders={folders} 
+            setFolders={setFolders} 
+            recorrido={recorrido} 
+            setRecorrido={setRecorrido} 
+            foldersOriginal={foldersOriginal} 
+            actual={actual} 
+            setActual={setActual} />
         </Container>
         {/* Hero unit */}
         <Container className={classes.cardGrid} maxWidth="md">
@@ -330,14 +339,11 @@ export default function Album(props) {
                         <Typography gutterBottom variant="h6" component="h2">
                           {card.name}
                         </Typography>
-
-                        <MostrarRuta ruta={card.path} />
-
-                        {/* <Typography variant="subtitle1" gutterBottom component="div">
-                        {card.name}
-                      </Typography> */}
-
-                        {/* <MostrarRuta show={buscador.enter} ruta={card.path} /> */}
+                        {
+                          buscador.enter ?  
+                            <MostrarRuta ruta={card.path} /> :
+                            <> </>
+                        }
                         <hr />
 
                       </CardContent>

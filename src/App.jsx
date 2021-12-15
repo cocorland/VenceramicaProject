@@ -94,13 +94,13 @@ const ProfileContent = () => {
  * If a user is authenticated the ProfileContent component above is rendered. Otherwise a message indicating a user is not authenticated is rendered.
  */
 
-const MainContent = ({ buscar }) => {    
+const MainContent = ({ buscar, setBuscar }) => {    
 
     return (
         <div className="App">
             <AuthenticatedTemplate>
                 <ProfileContent />
-                <Album buscar={buscar} />
+                <Album buscar={buscar} setBuscar={setBuscar}/>
 
             </AuthenticatedTemplate>
 
