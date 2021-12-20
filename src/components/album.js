@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
+// Proyecto Listo.
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -60,7 +61,7 @@ const buscarBreadcrumb = (breadcrumb, foldersOriginal, result) => {
   /* console.log("Lo que la funcion buscarBreadcrumb va a retornar: ", result) */
 }
 
-function handleClick(event, breadcrumb, setBreadcrumb, folders, setFolders, recorrido, setRecorrido, foldersOriginal, setConsegui, actual, setActual) {
+function handleClick(event, breadcrumb, setBreadcrumb, folders, setFolders, recorrido, setRecorrido, foldersOriginal, setConsegui, actual, setActual, setEnter) {
 
   /* Manejador de eventos.
   Controla las acciones que se realizan al hacer click en cualquiera de los niveles del breadcrumb */
@@ -87,9 +88,10 @@ function handleClick(event, breadcrumb, setBreadcrumb, folders, setFolders, reco
   // setFolders(recorrido[longitud])
 
   setBreadcrumb(breadcrumb);
+  setEnter({ name: '', enter: false });
 }
 
-const SimpleBreadcrumbs = ({ breadcrumb, setBreadcrumb, folders, setFolders, recorrido, setRecorrido, foldersOriginal, setConsegui, actual, setActual }) => {
+const SimpleBreadcrumbs = ({ breadcrumb, setBreadcrumb, folders, setFolders, recorrido, setRecorrido, foldersOriginal, setConsegui, actual, setActual, setEnter }) => {
   /* Componente encargado de la renderizacion del breadcrumb.
   Todos los elementos anteriores al ultimo deben ser clickeables. El ultimo elemento indica en que nivel del directorio estoy. */
 
@@ -99,10 +101,18 @@ const SimpleBreadcrumbs = ({ breadcrumb, setBreadcrumb, folders, setFolders, rec
   return (
     <Breadcrumbs separator="›" aria-label="breadcrumb" align="center">
       {arreglo.map((directorioRecorrido) => (
-        <Button underline="hover" color="primary" key={directorioRecorrido} onClick={(event) => handleClick(event, [...breadcrumb], setBreadcrumb, folders, setFolders, [...recorrido], setRecorrido, foldersOriginal, setConsegui, actual, setActual)}>
+        <Button
+          underline="hover"
+          color="primary"
+          key={directorioRecorrido}
+          onClick={(event) => handleClick
+            (
+              event, [...breadcrumb], setBreadcrumb, folders, setFolders, [...recorrido], setRecorrido, foldersOriginal, setConsegui, actual, setActual, setEnter
+            )
+          }>
           {directorioRecorrido}
         </Button>))}
-      <Typography color="inherit">{breadcrumb[breadcrumb.length - 1]}</Typography>
+      <Button underline="hover" color="inherit">{breadcrumb[breadcrumb.length - 1]}</Button>
     </Breadcrumbs>
   )
 };
@@ -305,16 +315,17 @@ export default function Album(props) {
       <CssBaseline />
       <main>
         <Container className={classes.cardGrid} maxWidth="md">
-          <SimpleBreadcrumbs 
-            breadcrumb={[...breadcrumb]} 
-            setBreadcrumb={setBreadcrumb} 
-            folders={folders} 
-            setFolders={setFolders} 
-            recorrido={recorrido} 
-            setRecorrido={setRecorrido} 
-            foldersOriginal={foldersOriginal} 
-            actual={actual} 
-            setActual={setActual} />
+          <SimpleBreadcrumbs
+            breadcrumb={[...breadcrumb]}
+            setBreadcrumb={setBreadcrumb}
+            folders={folders}
+            setFolders={setFolders}
+            recorrido={recorrido}
+            setRecorrido={setRecorrido}
+            foldersOriginal={foldersOriginal}
+            actual={actual}
+            setActual={setActual}
+            setEnter={setEnter} />
         </Container>
         {/* Hero unit */}
         <Container className={classes.cardGrid} maxWidth="md">
@@ -340,7 +351,7 @@ export default function Album(props) {
                           {card.name}
                         </Typography>
                         {
-                          buscador.enter ?  
+                          buscador.enter ?
                             <MostrarRuta ruta={card.path} /> :
                             <> </>
                         }
