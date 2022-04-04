@@ -181,7 +181,7 @@ export default function Album(props) {
   // Declaracion de estilos.
   const classes = useStyles();
   // Cadena de texto para hacer request a la API 1.
-  const url_name = 'http://localhost:4000/api/folders/';
+  const url_name = 'http://10.20.4.251:4000/api/folders';
   // Desestructuracion de las variables y estados que provienen del buscador.
   const { buscar: buscador, setBuscar: setEnter } = props;
   // Estado que mantiene el recorrido de directorios desde el cual provengo en caso de navegacion.
@@ -286,7 +286,11 @@ export default function Album(props) {
     setFolders([...cards]);
     setActual([...cards]);
     /* setBreadcrumb([...breadcrumb, nombre]); */
+    
     let setearElBreadcrumb = path.split(/\\/).splice(4);
+    /* setearElBreadcumb debe devolver el conjunto que será mapeado por el componente breadcrumb  */
+    /* por ejemplo, ['COMPAÑÍAS', 'VENCERÁMICA']. Esto lo obtengo mediante la ruta original, y la funcion splice  */
+    
     setBreadcrumb([...setearElBreadcrumb]);
     setConsegui(true);
     setEnter({ name: '', enter: false })
@@ -338,9 +342,9 @@ export default function Album(props) {
                   <div className="alert alert-danger"> No consegui resultados. Actualice la página o ingrese otra búsqueda. </div>)
                 :
                 (folders.map((card) => (
-                  <Grid item key={card} xs={12} sm={6} md={4} key={`${card.name}${card.path}`}>
+                  <Grid item xs={12} sm={6} md={4} key={`${card.name}${card.path}`}>
                     <Card className="animate__animated animate__fadeIn animate__fast">
-                      <CardMedia
+                      <CardMedia                                                                                 
                         name={card.name}
                         className={classes.cardMedia}
                         image={card.type == "directory" ? carpeta : displayImage(card.extension)}

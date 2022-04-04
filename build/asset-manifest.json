@@ -1,0 +1,29 @@
+{
+  "files": {
+    "main.css": "/OMNIPAGE/static/css/main.dff1265b.chunk.css",
+    "main.js": "/OMNIPAGE/static/js/main.7288405a.chunk.js",
+    "main.js.map": "/OMNIPAGE/static/js/main.7288405a.chunk.js.map",
+    "runtime-main.js": "/OMNIPAGE/static/js/runtime-main.206e4e81.js",
+    "runtime-main.js.map": "/OMNIPAGE/static/js/runtime-main.206e4e81.js.map",
+    "static/css/2.8c502dfb.chunk.css": "/OMNIPAGE/static/css/2.8c502dfb.chunk.css",
+    "static/js/2.c6d86d82.chunk.js": "/OMNIPAGE/static/js/2.c6d86d82.chunk.js",
+    "static/js/2.c6d86d82.chunk.js.map": "/OMNIPAGE/static/js/2.c6d86d82.chunk.js.map",
+    "index.html": "/OMNIPAGE/index.html",
+    "static/css/2.8c502dfb.chunk.css.map": "/OMNIPAGE/static/css/2.8c502dfb.chunk.css.map",
+    "static/css/main.dff1265b.chunk.css.map": "/OMNIPAGE/static/css/main.dff1265b.chunk.css.map",
+    "static/js/2.c6d86d82.chunk.js.LICENSE.txt": "/OMNIPAGE/static/js/2.c6d86d82.chunk.js.LICENSE.txt",
+    "static/media/DOC.839581f4.png": "/OMNIPAGE/static/media/DOC.839581f4.png",
+    "static/media/FILE.6f1ec08c.png": "/OMNIPAGE/static/media/FILE.6f1ec08c.png",
+    "static/media/FOLDER2.037bbf71.png": "/OMNIPAGE/static/media/FOLDER2.037bbf71.png",
+    "static/media/JPG.22ace614.png": "/OMNIPAGE/static/media/JPG.22ace614.png",
+    "static/media/PDF.16200e97.png": "/OMNIPAGE/static/media/PDF.16200e97.png",
+    "static/media/bathroom1.0d9aabef.png": "/OMNIPAGE/static/media/bathroom1.0d9aabef.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.206e4e81.js",
+    "static/css/2.8c502dfb.chunk.css",
+    "static/js/2.c6d86d82.chunk.js",
+    "static/css/main.dff1265b.chunk.css",
+    "static/js/main.7288405a.chunk.js"
+  ]
+}

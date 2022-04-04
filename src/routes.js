@@ -4,12 +4,13 @@ import App from './App.jsx';
 import visualizador from './components/visualizador';
 
 function Routes() {
+  //const rutaIIS=""; //Pruebas
+  const rutaIIS="/OMNIPAGE";  //Produccion
   return (
     <BrowserRouter>
       <Switch>
-        <Route exact path="/" component={App}/>
-        <Route exact path="/ver" component={visualizador}/>
-        <Route exact path="/:directory" component={App}/>
+        <Route exact path={rutaIIS+"/ver"} component={visualizador}/>
+        <Route exact path={rutaIIS} component={App}/>
       </Switch>
     </BrowserRouter>
   );
